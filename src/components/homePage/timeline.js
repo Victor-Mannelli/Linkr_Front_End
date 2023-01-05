@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Post from "./publicacao";
+import Post from "./post";
 import Posts from "./posts";
 
 export default function Timeline() {
@@ -11,7 +11,6 @@ export default function Timeline() {
         </Container>
     )
 }
-
 const Container = styled.div`
     display: flex;
     align-items: center;
