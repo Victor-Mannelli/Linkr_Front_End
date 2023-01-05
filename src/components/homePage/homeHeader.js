@@ -1,15 +1,39 @@
 import styled from "styled-components";
+import axios from "axios";
 import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
-import pfpic from "../assets/cat.jpg";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { toast } from "react-toastify";
+import pfpic from "../assets/cat.jpg";
 
 export default function HomeHeader() {
 	const [foldButton, setFoldButton] = useState(false);
 	const navigate = useNavigate();
+	const token = localStorage.getItem("token");
 
-	axios.get("http://localhost:5000/auth").then((e) => console.log(e));
+	function handleLogout() {
+		axios
+			.delete(`${process.env.REACT_APP_API}/logout`, {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			})
+			.then(
+				(e) =>
+					toast.success(e.data.message, {
+						position: "top-center",
+						autoClose: 5000,
+						hideProgressBar: false,
+						closeOnClick: true,
+						pauseOnHover: true,
+						draggable: true,
+						progress: undefined,
+						theme: "colored",
+					}),
+				localStorage.removeItem("token"),
+				navigate("/")
+			);
+	}
 
 	return (
 		<>
@@ -27,15 +51,7 @@ export default function HomeHeader() {
 				</div>
 			</Header>
 			{foldButton === true && (
-				<LogOutButton
-					onClick={() => {
-						navigate("/");
-						localStorage.removeItem("token");
-					}}
-				>
-					{" "}
-					Logout{" "}
-				</LogOutButton>
+				<LogOutButton onClick={() => handleLogout()}> Logout </LogOutButton>
 			)}
 		</>
 	);
