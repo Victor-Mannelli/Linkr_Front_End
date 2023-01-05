@@ -1,12 +1,12 @@
 import styled from "styled-components";
-import Publicacao from "./publicacao";
+import Post from "./publicacao";
 import Posts from "./posts";
 
 export default function Timeline() {
     return(
         <Container>
         <div className="title">timeline</div>
-        <Publicacao/>
+        <Post/>
         <Posts/>
         </Container>
     )

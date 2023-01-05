@@ -3,7 +3,7 @@ import { postUrl } from "../../service/server";
 import styled from "styled-components";
 import pfpic from "../assets/cat.jpg";
 
-export default function Publicacao() {
+export default function Post() {
     const [disabled, setDisabled] = useState(false);
     const [post, setPost] = useState({
         link: "",
