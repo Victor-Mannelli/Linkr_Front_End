@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 export default function Posts(){
     const [posts, setPosts] = useState(null);
+
     useEffect(()=>{
         getPosts().then((res)=>setPosts(res.data))
         .catch((error)=> alert("An error occured while trying to fetch the posts, please refresh the page"))

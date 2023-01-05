@@ -12,19 +12,18 @@ export default function Post() {
 
     function postLink(e){
         e.preventDefault();
-        setDisabled(!disabled);
+        setDisabled(!disabled);   
+        postUrl(post).then((res)=>{
+            setDisabled(false);
+            setPost({
+                link: "",
+                caption:"",
+            });
+        }).catch((error)=>{
+            alert("Houve um erro ao publicar seu link");
+            setDisabled(false);
+        })
     }
-    
-    postUrl(post).then((res)=>{
-        setDisabled(false);
-        setPost({
-            link: "",
-            caption:"",
-        });
-    }).catch((error)=>{
-        setDisabled(false);
-        alert("Houve um erro ao publicar seu link");
-    })
 
     function handleInput(e) {
         setPost({ ...post, [e.target.name]: e.target.value });
