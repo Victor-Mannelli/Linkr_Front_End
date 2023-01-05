@@ -1,7 +1,7 @@
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
-import SignInForm from "../components/authPage/signInForm";
-import SignUpForm from "../components/authPage/signUpForm";
+import SignInForm from "../components/signInForm/index";
+import SignUpForm from "../components/registrationForm/index";
 
 export default function AuthPage() {
 	const location = useLocation();
@@ -9,7 +9,7 @@ export default function AuthPage() {
 		<AuthorizationPage>
 			<Banner>
 				<h1> linkr </h1>
-				<h2> save, share and discord <br /> the best links on the web </h2>
+				<h2> save, share and discover <br /> the best links on the web </h2>
 			</Banner>
 			<AuthBar>
 				{location.pathname === "/" && <SignInForm />}
