@@ -18,3 +18,8 @@ export function getPosts(token){
     const promise = axios.get(`${BASE_URL}/post`, config);
     return promise;
 }
+
+export function postHashtag(hashtag) {
+    const promise = axios.post(`${BASE_URL}/trend`, hashtag);
+    return promise;
+}

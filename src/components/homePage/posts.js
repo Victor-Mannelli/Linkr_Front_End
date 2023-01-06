@@ -5,7 +5,7 @@ import CardPost from "./cardPost";
 import pfpic from "../assets/cat.jpg";
 
 export default function Posts(){
-    const arraymodelo =[{username:"João",image:pfpic,link:"http://", caption:"alooo", image_link: pfpic, title: "alooo", description:"esse é um texto exemplo aaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaasa sadsadsdsafsfsefsfse" }, {username:"João",image:pfpic,link:"http://", caption:"alooo", image_link: pfpic, title: "alooo", description:"esse é um texto exemplo" }];
+    const arraymodelo =[{username:"João",image:pfpic,link:"http://", caption:"alooo", image_link: pfpic, title: "alooo", description:"esse é um #texto #exemplo aaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaasa sadsadsdsafsfsefsfse" }, {username:"João",image:pfpic,link:"http://", caption:"alooo", image_link: pfpic, title: "alooo", description:"esse é um texto exemplo" }];
     const [posts, setPosts] = useState(arraymodelo);
 
     useEffect(()=>{
