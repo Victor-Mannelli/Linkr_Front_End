@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { postUrl } from "../../service/server";
+import { postUrl, postHashtag } from "../../service/server";
 import styled from "styled-components";
 import pfpic from "../assets/cat.jpg";
 
@@ -13,6 +13,19 @@ export default function Post() {
     function postLink(e){
         e.preventDefault();
         setDisabled(!disabled);   
+        const array = post.caption.split(' ');
+        console.log(array);
+        array.forEach((iten)=>{
+            if(iten.includes("#")==true){
+                console.log(iten);
+                postHashtag(iten).then((res)=>{
+                    console.log(res.data);
+                }).catch((error)=>{
+                    console.log(error);
+                    console.log("houve um erro em enviar a hashtag");
+                })
+            }
+        })
         postUrl(post).then((res)=>{
             setDisabled(false);
             setPost({
