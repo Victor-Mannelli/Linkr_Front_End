@@ -13,7 +13,7 @@ export default function HomePage(){
     )
 }
 const Content = styled.div`
-    height: 100vh;
+    min-height: 100vh;
     background: #333333;
     display:flex;   
     justify-content:center;

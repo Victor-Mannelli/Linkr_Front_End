@@ -27,7 +27,6 @@ export default function Post() {
 
     function handleInput(e) {
         setPost({ ...post, [e.target.name]: e.target.value });
-        console.log(post);
       }
 
     return(
