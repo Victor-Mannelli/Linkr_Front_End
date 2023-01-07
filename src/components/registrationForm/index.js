@@ -49,6 +49,7 @@ export default function SignUpForm() {
 
 		axios
 			.post(`${process.env.REACT_APP_API}/signup`, fetchData)
+
 			.then((e) => {
 				toast.success(e.data.message, {
 					position: "top-center",
@@ -65,6 +66,7 @@ export default function SignUpForm() {
 			.catch((e) => {
 				if (e.response.data.length !== 0) {
 					toast.error(e.response.data[0], {
+
 						position: "top-center",
 						autoClose: 5000,
 						hideProgressBar: false,
@@ -75,6 +77,7 @@ export default function SignUpForm() {
 						theme: "colored",
 					});
 				}
+
 				toast.error(e.response.data.message, {
 					position: "top-center",
 					autoClose: 5000,
