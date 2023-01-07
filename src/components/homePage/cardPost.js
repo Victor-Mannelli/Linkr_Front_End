@@ -1,11 +1,21 @@
 import styled from "styled-components";
+import { ReactTagify } from "react-tagify";
 export default function CardPost({username,image,link,caption,image_link,title,description}){
+
+    const tagStyle = {
+        color: 'white',
+        fontWeight: 700,
+        cursor: 'pointer'
+    }
     return(
         <Card>
             <img className="perfil" src={image} alt="profile_picture" />
             <div className="column">
                 <div className="name">{username}</div>
-                <div className="caption">{caption}</div>
+                <div className="caption">
+                    <ReactTagify 
+                    tagStyle={tagStyle}
+                    tagClicked={(tag)=> alert(tag)}>{caption}</ReactTagify></div>
                 <div className="link">
                     <div className="texto">
                         <h1>{title}</h1>

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL ="http://localhost:5000";
+const BASE_URL ="http://localhost:4000";
 
 
 export function postUrl(post,token) {

@@ -7,9 +7,9 @@ import pfpic from "../assets/cat.jpg";
 export default function Posts(){
     const arraymodelo =[{username:"João",image:pfpic,link:"http://", caption:"alooo", image_link: pfpic, title: "alooo", description:"esse é um #texto #exemplo aaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaasa sadsadsdsafsfsefsfse" }, {username:"João",image:pfpic,link:"http://", caption:"alooo", image_link: pfpic, title: "alooo", description:"esse é um texto exemplo" }];
     const [posts, setPosts] = useState(arraymodelo);
-
+    
     useEffect(()=>{
-        getPosts().then((res)=>setPosts(res.data))
+        getPosts("2a19cb2e-4a67-48df-8e3f-e22a8b31ba8b").then((res)=>setPosts(res.data))
         .catch((error)=> alert("An error occured while trying to fetch the posts, please refresh the page"))
     })
     return(
