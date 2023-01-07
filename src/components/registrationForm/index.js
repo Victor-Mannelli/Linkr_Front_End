@@ -50,7 +50,7 @@ export default function SignUpForm() {
 		axios
 			.post(`${process.env.REACT_APP_API}/signup`, fetchData)
 			.then(
-				(e) =>
+				(e) =>{
 					toast.success(e.response.data.message, {
 						position: "top-center",
 						autoClose: 5000,
@@ -60,8 +60,10 @@ export default function SignUpForm() {
 						draggable: true,
 						progress: undefined,
 						theme: "colored",
-					}),
+					})
 				navigate("/")
+				console.log("aqui")
+			}
 			)
 			.catch((e) =>
 				toast.error(e.response.data.message, {

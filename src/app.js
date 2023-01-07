@@ -5,6 +5,7 @@ import GlobalStyle from "./styles/globalStyles";
 import AuthPage from "./pages/authPage";
 import HomePage from "./pages/homePage";
 import DataProvider from "./context/auth";
+import TrendPage from "./pages/trendPage";
 
 export default function App() {
 	return (
@@ -15,6 +16,7 @@ export default function App() {
 				<Route path="/" element={<AuthPage />} />
 				<Route path="/signup" element={<AuthPage />} />
 				<Route path="/home" element={<HomePage />} />
+				<Route path="/hashtag/:hashtag" element={<TrendPage/>} />
 			</Routes>
 			{/* </ProductProvider> */}
 			</DataProvider>
