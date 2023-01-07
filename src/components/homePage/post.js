@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useState } from "react";
 import { postUrl, postHashtag } from "../../service/server";
 import styled from "styled-components";
 import pfpic from "../assets/cat.jpg";
@@ -8,25 +8,30 @@ export default function Post() {
     const [post, setPost] = useState({
         link: "",
         caption:"",
-      });
+    });
+    const [postComplete, setPostComplete] = useState({});
 
     function postLink(e){
         e.preventDefault();
         setDisabled(!disabled);   
         const array = post.caption.split(' ');
         console.log(array);
+        let trends= [];
+
         array.forEach((iten)=>{
-            if(iten.includes("#")==true){
+            if(iten.includes("#") === true){
                 console.log(iten);
-                postHashtag(iten).then((res)=>{
-                    console.log(res.data);
-                }).catch((error)=>{
-                    console.log(error);
-                    console.log("houve um erro em enviar a hashtag");
-                })
+                trends = [...trends, iten]
             }
         })
-        postUrl(post).then((res)=>{
+
+        setPostComplete({
+            link: post.link,
+            caption: post.caption,
+            trends: trends,
+        })
+
+        postUrl(postComplete).then((res)=>{
             setDisabled(false);
             setPost({
                 link: "",
