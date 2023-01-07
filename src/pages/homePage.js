@@ -4,13 +4,14 @@ import { DataContext } from "../context/auth";
 import styled from "styled-components";
 import HomeHeader from "../components/homePage/homeHeader";
 import Timeline from "../components/homePage/timeline";
+import TrendsBox from "../components/homePage/trendsBox";
 
 export default function HomePage(){
     const navigate = useNavigate();
-	const { token } = useContext(DataContext);
-
+	//const { token } = useContext(DataContext);
+    const token = "2a19cb2e-4a67-48df-8e3f-e22a8b31ba8b"
 	useEffect(() => {
-		token === null && navigate("/");
+		//token === null && navigate("/");
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -19,6 +20,7 @@ export default function HomePage(){
             <HomeHeader/>
             <Content>
                 <Timeline/>
+                <TrendsBox/>
             </Content>
         </>
     )
