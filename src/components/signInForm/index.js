@@ -1,14 +1,19 @@
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LoginForm } from "./style";
 import { toast } from "react-toastify";
 import Input from "../Input";
+import { DataContext } from "../../context/auth";
 
 export default function SignInForm() {
 	const navigate = useNavigate();
+	const { setToken } = useContext(DataContext);
 
-	if (localStorage.getItem("token") !== null) navigate("/home");
+	useEffect(() => {
+		localStorage.getItem("token") !== null && navigate("/home");
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	const [fetchData, setFetchData] = useState({
 		email: "",
@@ -39,10 +44,12 @@ export default function SignInForm() {
 
 		axios
 			.post(`${process.env.REACT_APP_API}/signin`, fetchData)
-			.then((e) => 
-				localStorage.setItem("token", e.data.token),
+			.then(
+				(e) => {
+				setToken(e.data.token)
+				localStorage.setItem("token", e.data.token)
 				navigate("/home")
-			)
+			})
 			.catch((e) =>
 				toast.error(e.response.data.message, {
 					position: "top-center",

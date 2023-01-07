@@ -1,15 +1,16 @@
 import styled from "styled-components";
 import axios from "axios";
 import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { DataContext } from "../../context/auth";
 import pfpic from "../assets/cat.jpg";
 
 export default function HomeHeader() {
 	const [foldButton, setFoldButton] = useState(false);
 	const navigate = useNavigate();
-	const token = localStorage.getItem("token");
+	const { token } = useContext(DataContext)
 
 	function handleLogout() {
 		axios
@@ -34,6 +35,13 @@ export default function HomeHeader() {
 				navigate("/")
 			);
 	}
+
+	useEffect(() => {
+
+	  // pegar info do usuario para foto de perfil no header
+	
+	}, [])
+	
 
 	return (
 		<>
