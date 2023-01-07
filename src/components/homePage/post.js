@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useState } from "react";
 import { postUrl, postHashtag } from "../../service/server";
 import styled from "styled-components";
 import pfpic from "../assets/cat.jpg";
@@ -16,7 +16,7 @@ export default function Post() {
         const array = post.caption.split(' ');
         console.log(array);
         array.forEach((iten)=>{
-            if(iten.includes("#")==true){
+            if(iten.includes("#") === true){
                 console.log(iten);
                 postHashtag(iten).then((res)=>{
                     console.log(res.data);
