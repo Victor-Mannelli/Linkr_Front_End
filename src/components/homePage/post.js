@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useState } from "react";
 import { postUrl, postHashtag } from "../../service/server";
 import styled from "styled-components";
 import pfpic from "../assets/cat.jpg";
@@ -19,7 +19,7 @@ export default function Post() {
         let trends= [];
 
         array.forEach((iten)=>{
-            if(iten.includes("#")==true){
+            if(iten.includes("#") === true){
                 console.log(iten);
                 trends = [...trends, iten]
             }

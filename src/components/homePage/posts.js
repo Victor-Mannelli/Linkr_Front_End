@@ -1,5 +1,5 @@
 import { getPosts } from "../../service/server";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import CardPost from "./cardPost";
 import pfpic from "../assets/cat.jpg";
@@ -17,9 +17,10 @@ export default function Posts(){
             {
             posts==null?("...Loading")
             : 
-            posts.length==0?("Você ainda não tem publicações")
+            posts.length === 0?("Você ainda não tem publicações")
             : 
-            posts.map((p)=><CardPost 
+            posts.map((p, i)=><CardPost 
+            key={i}
             username={p.username}
             image={p.image}
             link= {p.link}

@@ -1,31 +1,13 @@
-import { useLocation } from "react-router-dom";
 import styled from "styled-components";
-import SignInForm from "../components/signInForm/index";
-import SignUpForm from "../components/registrationForm/index";
 
-export default function AuthPage() {
-	const location = useLocation();
-	return (
-		<AuthorizationPage>
-			<Banner>
-				<h1> linkr </h1>
-				<h2> save, share and discover <br /> the best links on the web </h2>
-			</Banner>
-			<AuthBar>
-				{location.pathname === "/" && <SignInForm />}
-				{location.pathname === "/signup" && <SignUpForm />}
-			</AuthBar>
-		</AuthorizationPage>
-	);
-}
-
-const AuthorizationPage = styled.div`
+export const AuthorizationPage = styled.div`
 	display: grid;
 	grid-template-columns: 65% 35%;
 	grid-template-rows: 100%;
 	height: 100vh;
 `;
-const Banner = styled.div`
+
+export const Banner = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -48,7 +30,8 @@ const Banner = styled.div`
 		line-height: 64px;
 	}
 `;
-const AuthBar = styled.div`
+
+export const AuthBar = styled.div`
 	background: #333333;
 	display: flex;
 	flex-direction: column;
