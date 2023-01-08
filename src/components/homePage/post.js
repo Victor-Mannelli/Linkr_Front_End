@@ -1,11 +1,15 @@
+
 import { useContext,  useState } from "react";
 import { postUrl, postHashtag } from "../../service/server";
 import styled from "styled-components";
 import pfpic from "../assets/cat.jpg";
 import { DataContext } from "../../context/auth";
+import { CreateConfig } from "../../service/config";
+
 
 export default function Post() {
     const [disabled, setDisabled] = useState(false);
+    const config = CreateConfig();
     const [post, setPost] = useState({
         link: "",
         caption:"",
@@ -33,7 +37,7 @@ export default function Post() {
             trends: trends,
         })
 
-        postUrl(postComplete).then((res)=>{
+        postUrl(postComplete,config).then((res)=>{
             setDisabled(false);
             setPost({
                 link: "",
