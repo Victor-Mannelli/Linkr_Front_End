@@ -1,16 +1,37 @@
 import styled from "styled-components";
 import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { DataContext } from "../../context/auth";
 import pfpic from "../assets/cat.jpg";
+import { CreateConfig } from "../../service/config"; 
 
 export default function HomeHeader() {
 	const [foldButton, setFoldButton] = useState(false);
+	const { setUserObj,userObj } = useContext(DataContext);
 	const navigate = useNavigate();
 	const { token } = useContext(DataContext)
+	const config = CreateConfig()
+	const profileImg = userObj.profile_picture
+	useEffect( () => {
+		const tratarSucesso = (res) => {
+			setUserObj(res.data) 
+		  	console.log(res.data.profile_picture)
+		}
+	
+		const tratarErro = (res) => {
+			console.log(res)
+			alert(res.message)
+			//navigate("/")
+			//window.location.reload()
+		}
+		const requisicao =  axios.get(`${process.env.REACT_APP_API}/user`, config);
+		requisicao.then(tratarSucesso)
+		requisicao.catch(tratarErro)
+		
+	}, [token])
 
 	function handleLogout() {
 		axios
@@ -36,18 +57,16 @@ export default function HomeHeader() {
 			);
 	}
 
-	useEffect(() => {
 
-	  // pegar info do usuario para foto de perfil no header
-	
-	}, [])
 	
 
 	return (
 		<>
 			<Header>
 				<div>
+					<Link to="/home">
 					<h1> linkr </h1>
+					</Link>
 				</div>
 				<div>
 					{foldButton === false ? (
@@ -55,7 +74,7 @@ export default function HomeHeader() {
 					) : (
 						<DownArrow onClick={() => setFoldButton(!foldButton)} />
 					)}
-					<img src={pfpic} alt="profile_picture" />
+					<img src={profileImg} alt="profile_picture" />
 				</div>
 			</Header>
 			{foldButton === true && (
@@ -97,6 +116,9 @@ const Header = styled.div`
 		width: 53px;
 		height: 53px;
 		border-radius: 26.5px;
+	}
+	a{
+		text-decoration: none;
 	}
 `;
 const UpArrow = styled(IoIosArrowUp)`
