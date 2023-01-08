@@ -8,11 +8,11 @@ import TrendsBox from "../components/homePage/trendsBox";
 
 export default function HomePage(){
     const navigate = useNavigate();
-	//const { token } = useContext(DataContext);
-    const token = "2a19cb2e-4a67-48df-8e3f-e22a8b31ba8b"
+	const { token } = useContext(DataContext);
+    //const token = "2a19cb2e-4a67-48df-8e3f-e22a8b31ba8b"
 	useEffect(() => {
-		//token === null && navigate("/");
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+		token === null && navigate("/");
+		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
     return (

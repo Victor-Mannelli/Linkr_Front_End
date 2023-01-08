@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { ReactTagify } from "react-tagify";
+import {  useNavigate } from "react-router-dom";
 export default function CardPost({username,image,link,caption,image_link,title,description}){
 
     const tagStyle = {
@@ -7,6 +8,7 @@ export default function CardPost({username,image,link,caption,image_link,title,d
         fontWeight: 700,
         cursor: 'pointer'
     }
+    const navigate = useNavigate();
     return(
         <Card>
             <img className="perfil" src={image} alt="profile_picture" />
@@ -15,7 +17,7 @@ export default function CardPost({username,image,link,caption,image_link,title,d
                 <div className="caption">
                     <ReactTagify 
                     tagStyle={tagStyle}
-                    tagClicked={(tag)=> alert(tag)}>{caption}</ReactTagify></div>
+                    tagClicked={(tag)=> navigate(`/hashtag/${tag.replace("#","")}`)}>{caption}</ReactTagify></div>
                 <div className="link">
                     <div className="texto">
                         <h1>{title}</h1>

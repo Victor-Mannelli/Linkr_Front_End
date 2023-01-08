@@ -2,13 +2,13 @@ import styled from "styled-components";
 import Post from "./post";
 import Posts from "./posts";
 
-export default function Timeline(title) {
+export default function Timeline({title}) {
     const boolean = !title ? true : false 
     return(
         <Container>
-        {<div className="title">  timeline</div>}
-        <Post/>
-        <Posts/>
+        {boolean ? <div className="title">  timeline</div> : <div className="title">  # {title}</div>}
+        {boolean ? <Post/> : ""}
+        <Posts trend={title}/>
         </Container>
     )
 }
