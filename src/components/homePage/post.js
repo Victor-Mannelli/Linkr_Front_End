@@ -1,8 +1,11 @@
-import { useState } from "react";
-import { postUrl} from "../../service/server";
+
+import { useContext,  useState } from "react";
+import { postUrl, postHashtag } from "../../service/server";
 import styled from "styled-components";
 import pfpic from "../assets/cat.jpg";
+import { DataContext } from "../../context/auth";
 import { CreateConfig } from "../../service/config";
+
 
 export default function Post() {
     const [disabled, setDisabled] = useState(false);
@@ -11,8 +14,9 @@ export default function Post() {
         link: "",
         caption:"",
     });
+    const { userObj } = useContext(DataContext);
     const [postComplete, setPostComplete] = useState({});
-
+    const {profile_picture} = userObj
     function postLink(e){
         e.preventDefault();
         setDisabled(!disabled);   
@@ -51,7 +55,7 @@ export default function Post() {
 
     return(
         <Container>
-        <img src={pfpic} alt="profile_picture" />
+        <img src={profile_picture} alt="profile_picture" />
         <form onSubmit={postLink}>
         <div>What are you going to share today?</div>
         <input
@@ -96,6 +100,7 @@ const Container = styled.div`
     position: relative;
     font-family: 'Lato';
     font-style: normal;
+    margin-bottom: 20px;
     img{
         width: 50px;
         height: 50px;
