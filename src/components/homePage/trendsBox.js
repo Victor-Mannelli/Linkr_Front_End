@@ -3,12 +3,12 @@ import {SectionStyle} from "../../styles/trendBoxStyle"
 import { ReactTagify } from "react-tagify";
 import  axios  from "axios";
 import { CreateConfig } from "../../service/config"; 
+import { useNavigate } from "react-router-dom";
 
 export default function TrendsBox(){
-
+    const navigate = useNavigate();
     const config = CreateConfig()
     const [trends, setTrends] = useState([])
-    const array = ['#foca','#Dog','#Poggers']
     const tagStyle = {
         color: 'white',
         fontWeight: 700,
@@ -38,10 +38,14 @@ export default function TrendsBox(){
         }
         GetTrends();
     },[])
+
+    const SearchTrend = (trend) => {
+        navigate(`/hashtag/${trend.replace("#","")}`)
+    }
     return(
         <SectionStyle>
             <h3>trending</h3>
-            {trends.map( (item,i) => <p key={i}><ReactTagify tagStyle={tagStyle}>{item.trending_name}</ReactTagify></p>)}
+            {trends.map( (item,i) => <p onClick={() => SearchTrend(item.trending_name)} key={i}> { "# " + item.trending_name.replace("#","")}</p>)}
         </SectionStyle>
     )
 }
