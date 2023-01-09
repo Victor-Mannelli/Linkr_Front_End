@@ -13,7 +13,7 @@ export default function Post() {
         link: "",
         caption:"",
     });
-    const { userObj } = useContext(DataContext);
+    const { userObj,setIsPosted,isPosted } = useContext(DataContext);
     const [postComplete, setPostComplete] = useState({});
     const {profile_picture} = userObj
     function postLink(e){
@@ -42,6 +42,8 @@ export default function Post() {
                 link: "",
                 caption:"",
             });
+            const y = !isPosted
+            setIsPosted(y);
         }).catch((error)=>{
             alert("Houve um erro ao publicar seu link");
             setDisabled(false);
