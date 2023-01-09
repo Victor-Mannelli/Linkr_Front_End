@@ -24,19 +24,36 @@ export default function Buttons({ obj }) {
 
     function deletePostFunction() {
         setIsDisable(true);
-    
-        deletePost(obj.id)
-        .then(() => {
-          closeModal();
-          setIsDisable(false);
-        })
-        .catch((error) => {
-          alert('Could not delete the post');
-          console.log(error);
-          closeModal();
-          setIsDisable(false);
-        });
-      }
+
+        deletePost(obj.id, config)
+            .then((res) => {
+                closeModal();
+                setIsDisable(false);
+            })
+            .catch((error) => {
+                alert('Could not delete the post');
+                console.log(error);
+                closeModal();
+                setIsDisable(false);
+            });
+    }
+
+    function share() {
+        setIsDisable(true);
+
+        postUrl(obj.id, config)
+            .then(() => {
+                closeModal();
+                setIsDisable(false);
+            })
+            .catch((error) => {
+                alert('Could not delete the post');
+                console.log(error);
+                closeModal();
+                setIsDisable(false);
+            });
+    }
+
 
     return (
         <DivButton>

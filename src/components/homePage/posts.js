@@ -67,6 +67,7 @@ export default function Posts({trend}){
             image_link={p.image_link}
             title={p.title}
             description={p.description}
+            id={p.id}
             />)
         }
     }
