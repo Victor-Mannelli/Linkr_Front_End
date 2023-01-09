@@ -291,7 +291,7 @@ const Card = styled.div`
         align-items: center;
         flex-direction: column;
         justify-content:space-between;
-        width:100%;
+        width:90%;
         padding-left: 15px; 
         
         div{
@@ -345,5 +345,9 @@ const LikeDiv = styled.div`
     p{
         font-size: 12px;
         margin-left: 5px;
+    }
+
+    @media(max-width: 614px){
+        display: none;
     }
 `

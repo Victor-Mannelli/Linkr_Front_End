@@ -41,4 +41,8 @@ export const SectionStyle = styled.section`
 
     }
 
+    @media(max-width: 614px){
+
+        display: none;
+    }
 `
