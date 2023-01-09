@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import {SectionStyle} from "../../styles/trendBoxStyle"
-import { ReactTagify } from "react-tagify";
 import  axios  from "axios";
 import { CreateConfig } from "../../service/config"; 
 import { useNavigate } from "react-router-dom";
