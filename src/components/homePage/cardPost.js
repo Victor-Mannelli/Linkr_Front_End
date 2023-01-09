@@ -221,6 +221,7 @@ export default function CardPost({ username, image, link, caption, image_link, t
                 <div className="name">{username}
                     <Buttons
                         obj={obj}
+                        newCaption={description}
                     />
                 </div>
                 <div className="caption">

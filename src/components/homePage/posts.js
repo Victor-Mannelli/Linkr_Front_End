@@ -7,7 +7,7 @@ import { CreateConfig } from "../../service/config";
 import  axios  from "axios";
 
 export default function Posts({trend}){
-    const arraymodelo =[{username:"João",image:pfpic,link:"http://", caption:"alooo", image_link: pfpic, title: "alooo", description:"esse é um #texto #exemplo aaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaasa sadsadsdsafsfsefsfse" }, {username:"João",image:pfpic,link:"http://", caption:"alooo", image_link: pfpic, title: "alooo", description:"esse é um texto exemplo" }];
+    const arraymodelo =[{username:"João",image:pfpic,link:"http://", caption:"alooo", image_link: pfpic, title: "alooo", description:"esse é um #texto #exemplo aaaaaaaaaaaa sadsadsdsafsfsefsfse" }, {username:"João",image:pfpic,link:"http://", caption:"alooo", image_link: pfpic, title: "alooo", description:"esse é um texto exemplo" }];
     const config = CreateConfig()
     const [posts, setPosts] = useState([]);
     const [trends, setTrends] = useState([])
@@ -67,7 +67,6 @@ export default function Posts({trend}){
             image_link={p.image_link}
             title={p.title}
             description={p.description}
-            id={p.id}
             />)
         }
     }

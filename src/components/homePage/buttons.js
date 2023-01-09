@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { deletePost, postUrl } from "../../service/server";
+import { deletePost, updatePost } from "../../service/server";
 import { ThreeDots } from 'react-loader-spinner';
 import Modal from 'react-modal';
 import styled from "styled-components";
@@ -9,8 +9,10 @@ import { CreateConfig } from "../../service/config";
 
 Modal.setAppElement('#root');
 
-export default function Buttons({ obj }) {
+export default function Buttons({ obj, newCaption }) {
     const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [formInf, setFormInf] = useState({ newCaption: newCaption });
+    const [isEditing, setIsEditing] = useState(false);
     const [isDisable, setIsDisable] = useState(false);
     const config = CreateConfig();
 
@@ -38,9 +40,63 @@ export default function Buttons({ obj }) {
             });
     }
 
+    function editPost() {
+        isEditing ? resetForm() : setIsEditing(true);
+    }
+
+    function onKeyPress(e) {
+        if (e.keyCode === 13 && e.shiftKey === false) {
+            e.preventDefault();
+            handleForm();
+        }
+        if (e.keyCode === 27) resetForm();
+    }
+
+    function resetForm() {
+        setIsEditing(false);
+        setFormInf({
+            ...formInf,
+            newCaption: newCaption,
+        });
+    }
+
+    function updateInfs(e) {
+        setFormInf({
+            ...formInf,
+            [e.target.name]: e.target.value
+        });
+    }
+
+    function focus(e) {
+        var val = e.target.value;
+        e.target.value = '';
+        e.target.value = val;
+    }
+
+    function handleForm(e) {
+        setIsDisable(true);
+        const split = formInf.newCaption.split("#");
+        const trends = split.map(e => e.split(" ")[0]);
+        trends.shift();
+        const body = { ...formInf, newTrend: trends }
+        console.log(formInf);
+
+        const promise = updatePost(obj.id, body);
+        promise
+            .then((r) => {
+                setFormInf({ newCaption: formInf.newCaption });
+                setIsDisable(false);
+                setIsEditing(false);
+            })
+            .catch(() => {
+                alert("An error has occurred on editing post's caption");
+                setIsDisable(false);
+            });
+    }
+
     return (
         <DivButton>
-            <Edit />
+            <Edit onClick={editPost} />
             <Delete onClick={openModal} />
             <Modal
                 isOpen={modalIsOpen}
@@ -83,7 +139,22 @@ export default function Buttons({ obj }) {
                     }
                 </div>
             </Modal>
+            {
+                isEditing ?
 
+                    <form onSubmit={handleForm}>
+                        <textarea type="text" name="newCaption" value={formInf.newCaption}
+                            placeholder="Awesome article about #javascript" disabled={isDisable}
+                            onChange={updateInfs} onKeyDown={onKeyPress} autoFocus
+                            onFocus={focus}
+                        ></textarea>
+                        <button disabled={isDisable} type="submit" >
+                        </button>
+                    </form> :
+                    <p>
+                        {newCaption}
+                    </p>
+            }
         </DivButton>
     )
 }
@@ -91,6 +162,23 @@ export default function Buttons({ obj }) {
 const DivButton = styled.div`
     display:flex;
     justify-content:flex-end;
+    align-items
+
+    form textarea {
+        width: 100%;
+        height: auto;
+        padding: 4px 9px;
+        font-size: 14px;
+        font-family: "Lato", sans-serif;
+        background-color: #ffffff;
+        color: #4C4C4C;
+        border-radius: 7px;
+        resize: none;
+      }
+      form button {
+        display: none;
+      }
+
 `
 
 const Delete = styled(FaTrash)`
