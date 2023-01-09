@@ -38,23 +38,6 @@ export default function Buttons({ obj }) {
             });
     }
 
-    function share() {
-        setIsDisable(true);
-
-        postUrl(obj.id, config)
-            .then(() => {
-                closeModal();
-                setIsDisable(false);
-            })
-            .catch((error) => {
-                alert('Could not delete the post');
-                console.log(error);
-                closeModal();
-                setIsDisable(false);
-            });
-    }
-
-
     return (
         <DivButton>
             <Edit />
