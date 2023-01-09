@@ -1,16 +1,18 @@
 import { getPosts } from "../../service/server";
-import { useEffect, useState } from "react";
+import { useEffect, useState,useContext } from "react";
 import styled from "styled-components";
 import CardPost from "./cardPost";
 import pfpic from "../assets/cat.jpg";
 import { CreateConfig } from "../../service/config";
 import  axios  from "axios";
+import { DataContext } from "../../context/auth";
 
 export default function Posts({trend}){
     const arraymodelo =[{username:"João",image:pfpic,link:"http://", caption:"alooo", image_link: pfpic, title: "alooo", description:"esse é um #texto #exemplo aaaaaaaaaaaa sadsadsdsafsfsefsfse" }, {username:"João",image:pfpic,link:"http://", caption:"alooo", image_link: pfpic, title: "alooo", description:"esse é um texto exemplo" }];
     const config = CreateConfig()
     const [posts, setPosts] = useState([]);
     const [trends, setTrends] = useState([])
+    const { isPosted } = useContext(DataContext);
 
     useEffect(()=>{
         if (!trend) {
@@ -38,7 +40,7 @@ export default function Posts({trend}){
             SearchTrend()
         }
         
-    },[trend])
+    },[trend,isPosted])
 
     const VerifyPosts = () =>{
         if (posts==null) {

@@ -345,7 +345,7 @@ const Card = styled.div`
 `
 const LikeDiv = styled.div`
     position: absolute;
-    top: 70px;
+    top: 80px;
     
     svg{
         width: 44px;
@@ -357,7 +357,5 @@ const LikeDiv = styled.div`
         margin-left: 5px;
     }
 
-    @media(max-width: 614px){
-        display: none;
-    }
+
 `
