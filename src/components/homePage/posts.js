@@ -59,6 +59,7 @@ export default function Posts({trend}){
         }else{
             return posts.map((p, i)=><CardPost 
             key={i}
+            obj={p}
             username={p.username}
             image={p.image}
             link= {p.link}

@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import { ReactTagify } from "react-tagify";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Buttons from "./buttons";
 
-export default function CardPost({username,image,link,caption,image_link,title,description}){
+export default function CardPost({ username, image, link, caption, image_link, title, description, obj }) {
 
     const tagStyle = {
         color: 'white',
@@ -11,17 +11,19 @@ export default function CardPost({username,image,link,caption,image_link,title,d
         cursor: 'pointer'
     }
     const navigate = useNavigate();
-    return(
+    return (
         <Card>
             <img className="perfil" src={image} alt="profile_picture" />
             <div className="column">
                 <div className="name">{username}
-                <Buttons/>
+                    <Buttons
+                        obj={obj}
+                    />
                 </div>
                 <div className="caption">
-                    <ReactTagify 
-                    tagStyle={tagStyle}
-                    tagClicked={(tag)=> navigate(`/hashtag/${tag.replace("#","")}`)}>{caption}</ReactTagify></div>
+                    <ReactTagify
+                        tagStyle={tagStyle}
+                        tagClicked={(tag) => navigate(`/hashtag/${tag.replace("#", "")}`)}>{caption}</ReactTagify></div>
                 <div className="link">
                     <div className="texto">
                         <h1>{title}</h1>
@@ -34,7 +36,7 @@ export default function CardPost({username,image,link,caption,image_link,title,d
         </Card>
     )
 }
-const Card= styled.div`
+const Card = styled.div`
     display:flex;
     justify-content:space-between;
     width:100%;
