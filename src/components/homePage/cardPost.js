@@ -1,13 +1,14 @@
 import styled from "styled-components";
 import { ReactTagify } from "react-tagify";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useState, useContext, useEffect } from "react";
+import { AiOutlineHeart } from 'react-icons/ai';
+import { AiFillHeart } from 'react-icons/ai';
 import Buttons from "./buttons";
 import axios from "axios";
 import { DataContext } from "../../context/auth";
 import { Tooltip } from 'react-tooltip'
 import 'react-tooltip/dist/react-tooltip.css'
-
-export default function CardPost({username,image,link,caption,image_link,title,description}){
 
 export default function CardPost({ username, image, link, caption, image_link, title, description, id, obj }) {
     const [boolLike, setboolLike] = useState(false);
@@ -35,7 +36,7 @@ export default function CardPost({ username, image, link, caption, image_link, t
             if (array.length === 1) {
                 x = "Você"
             } else if (array.length === 2) {
-                const name = array[1].id != isMe[0].id ? array[1].name : array[0].name
+                const name = array[1].id !== isMe[0].id ? array[1].name : array[0].name
                 x = "Você e " + name
             } else {
                 for (let i = 0; i < 3; i++) {
