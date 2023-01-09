@@ -94,6 +94,7 @@ const Container = styled.div`
     position: relative;
     font-family: 'Lato';
     font-style: normal;
+    margin-bottom: 28px;
     img{
         width: 50px;
         height: 50px;
