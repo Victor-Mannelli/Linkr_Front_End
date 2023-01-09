@@ -1,27 +1,220 @@
 import styled from "styled-components";
 import { ReactTagify } from "react-tagify";
-import {  useNavigate } from "react-router-dom";
-import Buttons from "./buttons";
+import { useNavigate } from "react-router-dom";
+import { AiOutlineHeart } from 'react-icons/ai';
+import { AiFillHeart } from 'react-icons/ai';
+import { useState, useContext, useEffect } from "react";
+import axios from "axios";
+import { DataContext } from "../../context/auth";
+import { Tooltip } from 'react-tooltip'
+import 'react-tooltip/dist/react-tooltip.css'
 
-export default function CardPost({username,image,link,caption,image_link,title,description}){
 
+export default function CardPost({ username, image, link, caption, image_link, title, description, id }) {
+    const [boolLike, setboolLike] = useState(false);
+    const [likeId, setLikeId] = useState("");
+    const [disabled, setDisable] = useState(true);
+    const [likes, setLikes] = useState([]);
+    const [update, setUpdate] = useState(false);
+    const [likePhrase, setPhrase] = useState("");
+    const { token } = useContext(DataContext)
     const tagStyle = {
         color: 'white',
         fontWeight: 700,
         cursor: 'pointer'
     }
+    const VerifyLikes = (array) => {
+        const isMe = array.filter((item) => item.isyou === true)
+        console.log(isMe)
+        console.log(array)
+        const bool = !boolLike
+        setPhrase("")
+        if (isMe.length > 0 && update === false) {
+            setLikeId(isMe[0].id)
+            setboolLike(bool)
+            let x = likePhrase
+            if (array.length === 1) {
+                x = "Você"
+            } else if (array.length === 2) {
+                const name = array[1].id != isMe[0].id ? array[1].name : array[0].name
+                x = "Você e " + name
+            } else {
+                for (let i = 0; i < 3; i++) {
+                    const element = array[i].name;
+
+                    if (i == 1 && !array[i].isyou) {
+                        x = x + "Você"
+                    } else if (i == 2 && !array[i].isyou) {
+                        x = x + "," + element
+                    } else if (!array[i].isyou) {
+                        x = x + `e outras  ${array[0].count - 2 === 0 ? "" : array[0].count - 2} pessoas`
+                    } else {
+                        i--
+                    }
+
+                }
+            }
+
+            console.log(x)
+            setPhrase(x)
+        } else if (array.length>0) {
+            let x = likePhrase
+            if (array.length === 1) {
+                x = array[0].name
+            } else if (array.length === 2) {
+                x = array[0].name +" e " + array[1].name
+            } else {
+                for (let i = 0; i < 3; i++) {
+                    const element = array[i].name;
+
+                    if (i == 1 && !array[i].isyou) {
+                        x = x + element
+                    } else if (i == 2 && !array[i].isyou) {
+                        x = x + "," + element
+                    } else if (!array[i].isyou) {
+                        x = x + `e outras  ${array[0].count - 2 === 0 ? "" : array[0].count - 2} pessoas`
+                    } else {
+                        i--
+                    }
+
+                }
+            }
+        }
+    }
+    const ClickLike = () => {
+        const bool = !boolLike
+        setboolLike(bool)
+        if (disabled) {
+            if (bool) {
+                setDisable(false)
+                const PostLike = () => {
+                    const config = {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        }
+                    }
+                    const body = {
+                        post_id: id
+                    }
+                    const tratarSucesso = (res) => {
+
+                        const dataArray = res
+                        console.log(dataArray)
+                        setLikeId(res.data.id)
+                        setUpdate("bool")
+                        setDisable(true)
+
+                    }
+
+                    const tratarErro = (res) => {
+                        console.log(res)
+                        alert(res.message)
+                        setDisable(true)
+                        //navigate("/")
+                        //window.location.reload()
+                    }
+
+                    const requisicao = axios.post(`${process.env.REACT_APP_API}/likes`, body, config);
+                    requisicao.then(tratarSucesso)
+                    requisicao.catch(tratarErro)
+                }
+                PostLike();
+
+            } else {
+                setDisable(false)
+                const DelLike = () => {
+                    console.log(likeId)
+                    const config = {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            id: likeId
+                        }
+                    }
+                    const tratarSucesso = (res) => {
+
+                        const dataArray = res.data
+                        console.log(dataArray)
+                        setUpdate("update")
+                        setDisable(true)
+                    }
+
+                    const tratarErro = (res) => {
+                        console.log(res)
+                        alert(res.message)
+                        setDisable(true)
+                        //navigate("/")
+                        //window.location.reload()
+                    }
+
+                    const requisicao = axios.delete(`${process.env.REACT_APP_API}/likes`, config);
+                    requisicao.then(tratarSucesso)
+                    requisicao.catch(tratarErro)
+                }
+                DelLike();
+            }
+        }
+
+    }
+    useEffect(() => {
+
+        const GetLikes = () => {
+
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    post_id: id
+                }
+            }
+
+            const tratarSucesso = (res) => {
+                console.log(res)
+                const dataArray = res.data
+                VerifyLikes(dataArray)
+                setLikes(dataArray)
+            }
+
+            const tratarErro = (res) => {
+                console.log(res)
+                alert(res.message)
+                //navigate("/")
+                //window.location.reload()
+            }
+
+            const requisicao = axios.get(`${process.env.REACT_APP_API}/likes`, config);
+            requisicao.then(tratarSucesso)
+            requisicao.catch(tratarErro)
+        }
+        GetLikes();
+        //setInterval(GetLikes,2000)
+    }, [update, id])
+
+
+    const displayLike = () => {
+        if (likes.length <= 0) {
+            return 0 + " likes"
+        } else {
+            return Number(likes[0].count) === 1 ? likes[0]?.count + "like" : likes[0]?.count + "likes"
+        }
+    }
     const navigate = useNavigate();
-    return(
+    return (
         <Card>
             <img className="perfil" src={image} alt="profile_picture" />
+            <LikeDiv id={id} boolean={boolLike}>
+                {!boolLike ? <AiOutlineHeart onClick={ClickLike} /> : <AiFillHeart onClick={ClickLike} />}
+                <p>{displayLike()}</p>
+            </LikeDiv>
+
+            <Tooltip place="bottom" style={{ backgroundColor: "white", color: "black" }} anchorId={id} content={likePhrase} />
+
+
             <div className="column">
                 <div className="name">{username}
-                <Buttons/>
                 </div>
                 <div className="caption">
-                    <ReactTagify 
-                    tagStyle={tagStyle}
-                    tagClicked={(tag)=> navigate(`/hashtag/${tag.replace("#","")}`)}>{caption}</ReactTagify></div>
+                    <ReactTagify
+                        tagStyle={tagStyle}
+                        tagClicked={(tag) => navigate(`/hashtag/${tag.replace("#", "")}`)}>{caption}</ReactTagify></div>
                 <div className="link">
                     <div className="texto">
                         <h1>{title}</h1>
@@ -34,7 +227,7 @@ export default function CardPost({username,image,link,caption,image_link,title,d
         </Card>
     )
 }
-const Card= styled.div`
+const Card = styled.div`
     display:flex;
     justify-content:space-between;
     width:100%;
@@ -135,5 +328,19 @@ const Card= styled.div`
         .texto{
             padding: 5px;
         }
+    }
+`
+const LikeDiv = styled.div`
+    position: absolute;
+    top: 70px;
+    
+    svg{
+        width: 44px;
+        height: 44px;
+        color: ${props => props.boolean ? "red" : "white"};
+    }
+    p{
+        font-size: 12px;
+        margin-left: 5px;
     }
 `
