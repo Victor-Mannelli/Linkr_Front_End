@@ -1,8 +1,7 @@
 
 import { useContext,  useState } from "react";
-import { postUrl, postHashtag } from "../../service/server";
+import { postUrl } from "../../service/server";
 import styled from "styled-components";
-import pfpic from "../assets/cat.jpg";
 import { DataContext } from "../../context/auth";
 import { CreateConfig } from "../../service/config";
 

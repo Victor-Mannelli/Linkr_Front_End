@@ -9,7 +9,7 @@ import { CreateConfig } from "../../service/config";
 
 Modal.setAppElement('#root');
 
-export default function Buttons({ obj, action }) {
+export default function Buttons({ obj }) {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [isDisable, setIsDisable] = useState(false);
     const config = CreateConfig();
@@ -20,17 +20,6 @@ export default function Buttons({ obj, action }) {
 
     function closeModal() {
         setModalIsOpen(false);
-    }
-
-
-    function confirmModal() {
-        switch (action) {
-            case "share":
-                share();
-                break;
-            default:
-                deletePostFunction();
-        }
     }
 
     function deletePostFunction() {
@@ -48,23 +37,6 @@ export default function Buttons({ obj, action }) {
                 setIsDisable(false);
             });
     }
-
-    function share() {
-        setIsDisable(true);
-
-        postUrl(obj.id, config)
-            .then(() => {
-                closeModal();
-                setIsDisable(false);
-            })
-            .catch((error) => {
-                alert('Could not delete the post');
-                console.log(error);
-                closeModal();
-                setIsDisable(false);
-            });
-    }
-
 
     return (
         <DivButton>
@@ -106,7 +78,7 @@ export default function Buttons({ obj, action }) {
                             </> :
                             <>
                                 <button style={modalStyle.cancelButton} onClick={closeModal}>No, go back</button>
-                                <button style={modalStyle.confirmButton} onClick={confirmModal}>Yes, delete it</button>
+                                <button style={modalStyle.confirmButton} onClick={deletePostFunction}>Yes, delete it</button>
                             </>
                     }
                 </div>
