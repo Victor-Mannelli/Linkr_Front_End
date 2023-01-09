@@ -1,16 +1,16 @@
 import styled from "styled-components";
 import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
+import { useState, useContext, useEffect } from "react";
 import { AiOutlineHeart } from 'react-icons/ai';
 import { AiFillHeart } from 'react-icons/ai';
-import { useState, useContext, useEffect } from "react";
+import Buttons from "./buttons";
 import axios from "axios";
 import { DataContext } from "../../context/auth";
 import { Tooltip } from 'react-tooltip'
 import 'react-tooltip/dist/react-tooltip.css'
 
-
-export default function CardPost({ username, image, link, caption, image_link, title, description, id }) {
+export default function CardPost({ username, image, link, caption, image_link, title, description, id, obj }) {
     const [boolLike, setboolLike] = useState(false);
     const [likeId, setLikeId] = useState("");
     const [disabled, setDisable] = useState(true);
@@ -36,7 +36,7 @@ export default function CardPost({ username, image, link, caption, image_link, t
             if (array.length === 1) {
                 x = "Você"
             } else if (array.length === 2) {
-                const name = array[1].id != isMe[0].id ? array[1].name : array[0].name
+                const name = array[1].id !== isMe[0].id ? array[1].name : array[0].name
                 x = "Você e " + name
             } else {
                 for (let i = 0; i < 3; i++) {
@@ -57,12 +57,12 @@ export default function CardPost({ username, image, link, caption, image_link, t
 
             console.log(x)
             setPhrase(x)
-        } else if (array.length>0) {
+        } else if (array.length > 0) {
             let x = likePhrase
             if (array.length === 1) {
                 x = array[0].name
             } else if (array.length === 2) {
-                x = array[0].name +" e " + array[1].name
+                x = array[0].name + " e " + array[1].name
             } else {
                 for (let i = 0; i < 3; i++) {
                     const element = array[i].name;
@@ -210,6 +210,9 @@ export default function CardPost({ username, image, link, caption, image_link, t
 
             <div className="column">
                 <div className="name">{username}
+                    <Buttons
+                        obj={obj}
+                    />
                 </div>
                 <div className="caption">
                     <ReactTagify
