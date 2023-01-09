@@ -14,7 +14,7 @@ export default function Posts({trend}){
 
     useEffect(()=>{
         if (!trend) {
-        getPosts("2a19cb2e-4a67-48df-8e3f-e22a8b31ba8b").then((res)=>setPosts(res.data))
+        getPosts(config).then((res)=>setPosts(res.data))
         .catch((error)=> alert("An error occured while trying to fetch the posts, please refresh the page"))
         }else{
             const SearchTrend = () => {
