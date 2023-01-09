@@ -209,7 +209,9 @@ export default function CardPost({ username, image, link, caption, image_link, t
 
 
             <div className="column">
-                <div className="name">{username}</div>
+                <div className="name">{username}
+                <Buttons/>
+                </div>
                 <div className="caption">
                     <ReactTagify
                         tagStyle={tagStyle}
@@ -233,13 +235,16 @@ const Card = styled.div`
     background: #171717;
     height: 276px;
     border-radius: 16px;
-    padding: 15px;
+    padding: 18px;
     position: relative;
     font-family: 'Lato';
     font-style: normal;
-    margin-bottom:20px;
+    margin-bottom: 18px;
     color: #FFFFFF;
+    
     .name{
+        display:flex;
+        justify-content:space-between;
         font-style: normal;
         font-weight: 400;
         font-size: 19px;
