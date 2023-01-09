@@ -210,7 +210,6 @@ export default function CardPost({ username, image, link, caption, image_link, t
 
             <div className="column">
                 <div className="name">{username}
-                <Buttons/>
                 </div>
                 <div className="caption">
                     <ReactTagify
