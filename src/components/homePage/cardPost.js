@@ -17,6 +17,7 @@ export default function CardPost({ username, image, link, caption, image_link, t
     const [likes, setLikes] = useState([]);
     const [update, setUpdate] = useState(false);
     const [likePhrase, setPhrase] = useState("");
+    const [itsMe, setMe] = useState(false);
     const { token } = useContext(DataContext)
     const tagStyle = {
         color: 'white',
@@ -25,13 +26,14 @@ export default function CardPost({ username, image, link, caption, image_link, t
     }
     const VerifyLikes = (array) => {
         const isMe = array.filter((item) => item.isyou === true)
-        console.log(isMe)
-        console.log(array)
+        //console.log(isMe)
+        //console.log(array)
         const bool = !boolLike
         setPhrase("")
         if (isMe.length > 0 && update === false) {
             setLikeId(isMe[0].id)
             setboolLike(bool)
+            setMe(true)
             let x = likePhrase
             if (array.length === 1) {
                 x = "Você"
@@ -59,11 +61,13 @@ export default function CardPost({ username, image, link, caption, image_link, t
             setPhrase(x)
         } else if (array.length > 0) {
             let x = likePhrase
-            if (array.length === 1) {
+            if (array.length === 1 && !array[0].isyou) {
                 x = array[0].name
             } else if (array.length === 2) {
-                x = array[0].name + " e " + array[1].name
-            } else {
+                x = array[0].name +" e " + array[1].name
+            } else if (array.length === 1){
+                x = "Você"
+            }else {
                 for (let i = 0; i < 3; i++) {
                     const element = array[i].name;
 
@@ -79,8 +83,13 @@ export default function CardPost({ username, image, link, caption, image_link, t
 
                 }
             }
+            console.log(x)
+            setPhrase(x)
         }
     }
+
+    
+    
     const ClickLike = () => {
         const bool = !boolLike
         setboolLike(bool)
@@ -167,7 +176,7 @@ export default function CardPost({ username, image, link, caption, image_link, t
             }
 
             const tratarSucesso = (res) => {
-                console.log(res)
+                //console.log(res)
                 const dataArray = res.data
                 VerifyLikes(dataArray)
                 setLikes(dataArray)
