@@ -30,9 +30,12 @@ export default function CardPost({ username, image, link, caption, image_link, t
         //console.log(array)
         const bool = !boolLike
         setPhrase("")
-        if (isMe.length > 0 && update === false) {
-            setLikeId(isMe[0].id)
+        if (update === false && isMe.length>0) {
             setboolLike(bool)
+        }
+        if (isMe.length > 0 ) {
+            setLikeId(isMe[0].id)
+            
             setMe(true)
             let x = likePhrase
             if (array.length === 1) {
@@ -202,7 +205,8 @@ export default function CardPost({ username, image, link, caption, image_link, t
         if (likes.length <= 0) {
             return 0 + " likes"
         } else {
-            return Number(likes[0].count) === 1 ? likes[0]?.count + "like" : likes[0]?.count + "likes"
+            console.log(likes.length)
+            return Number(likes.length) === 1 ? likes.length + "like" : Number(likes.length) + " likes"
         }
     }
     const navigate = useNavigate();
