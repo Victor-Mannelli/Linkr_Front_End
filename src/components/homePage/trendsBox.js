@@ -28,7 +28,7 @@ export default function TrendsBox(){
 
             const tratarErro = (res) => {
                 console.log(res)
-                alert(res.message)
+                //alert(res.message)
                 //navigate("/")
                 //window.location.reload()
             }

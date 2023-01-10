@@ -39,22 +39,23 @@ export default function CardPost({ username, image, link, caption, image_link, t
             setMe(true)
             let x = likePhrase
             if (array.length === 1) {
+                console.log("1")
                 x = "Você"
             } else if (array.length === 2) {
+                console.log("2")
                 const name = array[1].id !== isMe[0].id ? array[1].name : array[0].name
                 x = "Você e " + name
             } else {
                 for (let i = 0; i < 3; i++) {
                     const element = array[i].name;
 
-                    if (i == 1 && !array[i].isyou) {
+                    if (i == 0 && !array[i].isyou) {
                         x = x + "Você"
-                    } else if (i == 2 && !array[i].isyou) {
+                    } else if (i == 1 &&  array[i].isyou === false) {
                         x = x + "," + element
-                    } else if (!array[i].isyou) {
-                        x = x + `e outras  ${array[0].count - 2 === 0 ? "" : array[0].count - 2} pessoas`
+                    } else if (i == 2 || array[i].isyou === false) {
+                        x = x + ` e outras  ${array.length - 2 === 0 ? "" : array.length - 2} pessoas`
                     } else {
-                        i--
                     }
 
                 }
@@ -96,6 +97,7 @@ export default function CardPost({ username, image, link, caption, image_link, t
     const ClickLike = () => {
         const bool = !boolLike
         setboolLike(bool)
+        setPhrase("")
         if (disabled) {
             if (bool) {
                 setDisable(false)
