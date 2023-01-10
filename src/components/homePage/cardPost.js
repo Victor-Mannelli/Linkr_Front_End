@@ -206,6 +206,11 @@ export default function CardPost({ username, image, link, caption, image_link, t
         }
     }
     const navigate = useNavigate();
+
+    function openWindow(url){
+        window.open(url);
+    }
+
     return (
         <Card>
             <img className="perfil" src={image} alt="profile" />
@@ -227,7 +232,7 @@ export default function CardPost({ username, image, link, caption, image_link, t
                     <ReactTagify
                         tagStyle={tagStyle}
                         tagClicked={(tag) => navigate(`/hashtag/${tag.replace("#", "")}`)}>{caption}</ReactTagify></div>
-                <div className="link">
+                <div className="link" onClick={()=>openWindow(link)}>
                     <div className="texto">
                         <h1>{title}</h1>
                         <p className="description">{description}</p>
@@ -315,6 +320,7 @@ const Card = styled.div`
         border: 1px solid #4D4D4D;
         border-radius: 11px;
         color: #B7B7B7;
+        cursor:pointer;
     }
     .texto{
         display: flex;
