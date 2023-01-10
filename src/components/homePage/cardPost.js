@@ -30,28 +30,32 @@ export default function CardPost({ username, image, link, caption, image_link, t
         //console.log(array)
         const bool = !boolLike
         setPhrase("")
-        if (isMe.length > 0 && update === false) {
-            setLikeId(isMe[0].id)
+        if (update === false && isMe.length>0) {
             setboolLike(bool)
+        }
+        if (isMe.length > 0 ) {
+            setLikeId(isMe[0].id)
+            
             setMe(true)
             let x = likePhrase
             if (array.length === 1) {
+                console.log("1")
                 x = "Você"
             } else if (array.length === 2) {
+                console.log("2")
                 const name = array[1].id !== isMe[0].id ? array[1].name : array[0].name
                 x = "Você e " + name
             } else {
                 for (let i = 0; i < 3; i++) {
                     const element = array[i].name;
 
-                    if (i == 1 && !array[i].isyou) {
+                    if (i == 0 && !array[i].isyou) {
                         x = x + "Você"
-                    } else if (i == 2 && !array[i].isyou) {
+                    } else if (i == 1 &&  array[i].isyou === false) {
                         x = x + "," + element
-                    } else if (!array[i].isyou) {
-                        x = x + `e outras  ${array[0].count - 2 === 0 ? "" : array[0].count - 2} pessoas`
+                    } else if (i == 2 || array[i].isyou === false) {
+                        x = x + ` e outras  ${array.length - 2 === 0 ? "" : array.length - 2} pessoas`
                     } else {
-                        i--
                     }
 
                 }
@@ -93,6 +97,7 @@ export default function CardPost({ username, image, link, caption, image_link, t
     const ClickLike = () => {
         const bool = !boolLike
         setboolLike(bool)
+        setPhrase("")
         if (disabled) {
             if (bool) {
                 setDisable(false)
@@ -202,7 +207,8 @@ export default function CardPost({ username, image, link, caption, image_link, t
         if (likes.length <= 0) {
             return 0 + " likes"
         } else {
-            return Number(likes[0].count) === 1 ? likes[0]?.count + "like" : likes[0]?.count + "likes"
+            console.log(likes.length)
+            return Number(likes.length) === 1 ? likes.length + "like" : Number(likes.length) + " likes"
         }
     }
     const navigate = useNavigate();

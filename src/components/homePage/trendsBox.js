@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,useContext } from "react";
 import {SectionStyle} from "../../styles/trendBoxStyle"
 import  axios  from "axios";
 import { CreateConfig } from "../../service/config"; 
 import { useNavigate } from "react-router-dom";
+import { DataContext } from "../../context/auth";
 
 export default function TrendsBox(){
     const navigate = useNavigate();
     const config = CreateConfig()
     const [trends, setTrends] = useState([])
+    const { isPosted } = useContext(DataContext);
     const tagStyle = {
         color: 'white',
         fontWeight: 700,
@@ -26,7 +28,7 @@ export default function TrendsBox(){
 
             const tratarErro = (res) => {
                 console.log(res)
-                alert(res.message)
+                //alert(res.message)
                 //navigate("/")
                 //window.location.reload()
             }
@@ -36,7 +38,7 @@ export default function TrendsBox(){
             requisicao.catch(tratarErro)
         }
         GetTrends();
-    },[])
+    },[isPosted])
 
     const SearchTrend = (trend) => {
         navigate(`/hashtag/${trend.replace("#","")}`)
