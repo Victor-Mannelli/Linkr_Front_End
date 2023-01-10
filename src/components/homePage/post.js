@@ -14,7 +14,7 @@ export default function Post() {
         caption:"",
     });
     const { userObj,setIsPosted,isPosted } = useContext(DataContext);
-    const [postComplete, setPostComplete] = useState({});
+    //const [postComplete, setPostComplete] = useState({});
     const {profile_picture} = userObj
     function postLink(e){
         e.preventDefault();
@@ -30,18 +30,29 @@ export default function Post() {
             }
         })
 
-        setPostComplete({
+        const postObject= {
             link: post.link,
             caption: post.caption,
             trends: trends,
-        })
+        }
 
-        postUrl(postComplete,config).then((res)=>{
+        /*setPostComplete({
+            link: post.link,
+            caption: post.caption,
+            trends: trends,
+        })*/
+
+        postUrl(postObject,config).then((res)=>{
             setDisabled(false);
             setPost({
                 link: "",
                 caption:"",
             });
+            /*setPostComplete({
+                link: "",
+                caption:"",
+                trends: [],
+            })*/
             const y = !isPosted
             setIsPosted(y);
         }).catch((error)=>{

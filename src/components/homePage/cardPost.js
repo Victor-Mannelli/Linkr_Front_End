@@ -208,7 +208,7 @@ export default function CardPost({ username, image, link, caption, image_link, t
     const navigate = useNavigate();
     return (
         <Card>
-            <img className="perfil" src={image} alt="profile_picture" />
+            <img className="perfil" src={image} alt="profile" />
             <LikeDiv id={id} boolean={boolLike}>
                 {!boolLike ? <AiOutlineHeart onClick={ClickLike} /> : <AiFillHeart onClick={ClickLike} />}
                 <p>{displayLike()}</p>
@@ -221,7 +221,6 @@ export default function CardPost({ username, image, link, caption, image_link, t
                 <div className="name">{username}
                     <Buttons
                         obj={obj}
-                        newCaption={description}
                     />
                 </div>
                 <div className="caption">

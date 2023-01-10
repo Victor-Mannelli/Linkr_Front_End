@@ -50,6 +50,7 @@ export default function Posts({trend}){
         }else if (trends.length>0){
             return trends.map((p, i) =><CardPost 
             key={i}
+            id={p.id}
             username={p.username}
             image={p.image}
             link= {p.link}
@@ -61,6 +62,7 @@ export default function Posts({trend}){
         }else{
             return posts.map((p, i)=><CardPost 
             key={i}
+            id={p.id}
             obj={p}
             username={p.username}
             image={p.image}
