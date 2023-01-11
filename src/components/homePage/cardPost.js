@@ -9,6 +9,7 @@ import axios from "axios";
 import { DataContext } from "../../context/auth";
 import { Tooltip } from 'react-tooltip'
 import 'react-tooltip/dist/react-tooltip.css'
+import linkpic from "../assets/link.jpeg";
 
 export default function CardPost({ username, image, link, caption, image_link, title, description, id, obj }) {
     const [boolLike, setboolLike] = useState(false);
@@ -244,7 +245,7 @@ export default function CardPost({ username, image, link, caption, image_link, t
                         <p className="description">{description}</p>
                         <p className="url">{link}</p>
                     </div>
-                    <img src={image_link} alt="profile_picture" />
+                    {image_link? <img src={image_link} alt="url_picture" />: <img src={linkpic} alt="url_picture"/> }
                 </div>
             </div>
         </Card>
@@ -291,7 +292,8 @@ const Card = styled.div`
         font-weight: 400;
         font-size: 16px;
         line-height: 19px;
-        color: #CECECE;
+        color: #CECECE; 
+        word-break: break-all;
     }
     p{
         font-style: normal;
@@ -302,9 +304,18 @@ const Card = styled.div`
     }
     .description{
         color: #9B9595;
+        overflow: hidden; // Removendo barra de rolagem
+        text-overflow: ellipsis; // Adicionando "..." ao final
+        display: -webkit-box;
+        -webkit-line-clamp: 3; // Quantidade de linhas
+        -webkit-box-orient: vertical; 
+        word-break: break-all;
     }
     .url{
         color: #CECECE;
+        white-space: nowrap; // Removendo quebra de linha
+        overflow: hidden; // Removendo a barra de rolagem
+        text-overflow: ellipsis; // Adicionando "..." 
     }
     .column{
         display: flex;
@@ -338,6 +349,7 @@ const Card = styled.div`
         width: 153.44px;
         height: 155px;
         border-radius: 0px 12px 13px 0px;
+        object-fit: cover;
     }
     @media(max-width: 614px){
         border-radius: 0px;
@@ -351,6 +363,9 @@ const Card = styled.div`
         }
         .texto{
             padding: 5px;
+        }
+        .url{
+            max-width: 120px; // Limite maximo do texto
         }
     }
 `

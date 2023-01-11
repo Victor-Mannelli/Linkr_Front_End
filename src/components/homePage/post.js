@@ -67,7 +67,7 @@ export default function Post() {
 
     return(
         <Container>
-        <img src={profile_picture} alt="profile_picture" />
+        <img src={profile_picture} alt="profile" />
         <form onSubmit={postLink}>
         <div>What are you going to share today?</div>
         <input
