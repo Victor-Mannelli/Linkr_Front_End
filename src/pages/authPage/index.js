@@ -1,7 +1,7 @@
 import { useLocation } from "react-router-dom";
 import { AuthBar, AuthorizationPage, Banner } from "./style";
-import SignInForm from "../../components/signInForm/index";
-import SignUpForm from "../../components/registrationForm/index";
+import SignInForm from "../../components/authPage/signInForm";
+import SignUpForm from "../../components/authPage/registrationForm";
 
 export default function AuthPage() {
 	const location = useLocation();

@@ -7,7 +7,9 @@ export default function DataProvider({ children }) {
 	const [userObj, setUserObj] = useState({});
 	const [isPosted, setIsPosted] = useState(false);
 	return (
-		<DataContext.Provider value={{ token, setToken,userObj,setUserObj ,isPosted,setIsPosted}}>
+		<DataContext.Provider
+			value={{ token, setToken, userObj, setUserObj, isPosted, setIsPosted }}
+		>
 			{children}
 		</DataContext.Provider>
 	);

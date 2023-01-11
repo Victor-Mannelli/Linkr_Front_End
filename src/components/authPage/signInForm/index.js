@@ -3,8 +3,8 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LoginForm } from "./style";
 import { toast } from "react-toastify";
+import { DataContext } from "../../../context/auth";
 import Input from "../Input";
-import { DataContext } from "../../context/auth";
 
 export default function SignInForm() {
 	const navigate = useNavigate();
