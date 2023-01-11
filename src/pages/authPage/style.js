@@ -6,7 +6,6 @@ export const AuthorizationPage = styled.div`
 	grid-template-rows: 100%;
 	height: 100vh;
 `;
-
 export const Banner = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -30,7 +29,6 @@ export const Banner = styled.div`
 		line-height: 64px;
 	}
 `;
-
 export const AuthBar = styled.div`
 	background: #333333;
 	display: flex;

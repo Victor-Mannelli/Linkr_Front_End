@@ -5,33 +5,38 @@ import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { DataContext } from "../../context/auth";
-import pfpic from "../assets/cat.jpg";
-import { CreateConfig } from "../../service/config"; 
+import { CreateConfig } from "../../service/config";
 
 export default function HomeHeader() {
-	const [foldButton, setFoldButton] = useState(false);
-	const { setUserObj,userObj } = useContext(DataContext);
 	const navigate = useNavigate();
-	const { token } = useContext(DataContext)
-	const config = CreateConfig()
-	const profileImg = userObj.profile_picture
-	useEffect( () => {
-		const tratarSucesso = (res) => {
-			setUserObj(res.data) 
-		  	console.log(res.data.profile_picture)
-		}
-	
-		const tratarErro = (res) => {
-			console.log(res)
-			alert(res.message)
-			//navigate("/")
-			//window.location.reload()
-		}
-		const requisicao =  axios.get(`${process.env.REACT_APP_API}/user`, config);
-		requisicao.then(tratarSucesso)
-		requisicao.catch(tratarErro)
-		
-	}, [token])
+	const config = CreateConfig();
+	const { setUserObj, userObj } = useContext(DataContext);
+	const { token } = useContext(DataContext);
+	const [foldButton, setFoldButton] = useState(false);
+	const profileImg = userObj.profile_picture;
+
+	useEffect(() => {
+		axios
+			.get(`${process.env.REACT_APP_API}/user`, config)
+			.then((e) => {
+				setUserObj(e.data);
+			})
+			.catch((error) => {
+				toast.error(error.message, {
+					position: "top-center",
+					autoClose: 5000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+					theme: "colored",
+				});
+				navigate("/");
+			});
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [token]);
 
 	function handleLogout() {
 		axios
@@ -57,15 +62,12 @@ export default function HomeHeader() {
 			);
 	}
 
-
-	
-
 	return (
 		<>
 			<Header>
 				<div>
 					<Link to="/home">
-					<h1> linkr </h1>
+						<h1> linkr </h1>
 					</Link>
 				</div>
 				<div>
@@ -74,7 +76,11 @@ export default function HomeHeader() {
 					) : (
 						<DownArrow onClick={() => setFoldButton(!foldButton)} />
 					)}
-					<img src={profileImg} alt="profile_picture" />
+					<ProfilePicture
+						onClick={() => navigate(`/post/${userObj.username}`)}
+						src={profileImg}
+						alt="profile_picture"
+					/>
 				</div>
 			</Header>
 			{foldButton === true && (
@@ -112,14 +118,15 @@ const Header = styled.div`
 		color: #ffffff;
 		padding-left: 30px;
 	}
-	img {
-		width: 53px;
-		height: 53px;
-		border-radius: 26.5px;
-	}
-	a{
+	a {
 		text-decoration: none;
 	}
+`;
+const ProfilePicture = styled.img`
+	width: 53px;
+	height: 53px;
+	border-radius: 26.5px;
+	cursor: pointer;
 `;
 const UpArrow = styled(IoIosArrowUp)`
 	width: 25px;
