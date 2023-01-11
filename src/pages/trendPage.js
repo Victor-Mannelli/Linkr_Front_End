@@ -6,7 +6,6 @@ import { useParams } from 'react-router-dom';
 
 export default function TrendPage(){
     const {hashtag} = useParams();
-    console.log(hashtag)
 
     return (
         <>
