@@ -45,7 +45,7 @@ export default function Posts({trend}){
     const VerifyPosts = () =>{
         if (posts==null) {
             return "...Loading"
-        } else if(posts.length === 0){
+        } else if(posts.length === 0 && trends.length === 0){
             return "Você ainda não tem publicações"
         }else if (trends.length>0){
             return trends.map((p, i) =><CardPost 
