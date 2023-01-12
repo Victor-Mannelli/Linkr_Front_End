@@ -18,7 +18,7 @@ export default function App() {
 					<Route path="/" element={<AuthPage />} />
 					<Route path="/signup" element={<AuthPage />} />
 					<Route path="/home" element={<HomePage />} />
-					<Route path="/post/:username" element={<UserPage />} />
+					<Route path="/user/:id" element={<UserPage />} />
 					<Route path="/hashtag/:hashtag" element={<TrendPage />} />
 				</Routes>
 				{/* </ProductProvider> */}

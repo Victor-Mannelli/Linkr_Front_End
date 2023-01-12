@@ -1,11 +1,21 @@
-import styled from "styled-components";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { DataContext } from "../../context/auth";
-import { CreateConfig } from "../../service/config";
+import { DataContext } from "../../../context/auth";
+import { CreateConfig } from "../../../service/config";
+import {
+	DownArrow,
+	Filter,
+	FilteredUsers,
+	Header,
+	LogOutButton,
+	ProfilePicture,
+	SearchBar,
+	SearchIcon,
+	UpArrow,
+} from "./style";
+import SearchBarUser from "./searchBarUser";
 
 export default function HomeHeader() {
 	const navigate = useNavigate();
@@ -13,7 +23,9 @@ export default function HomeHeader() {
 	const { setUserObj, userObj } = useContext(DataContext);
 	const { token } = useContext(DataContext);
 	const [foldButton, setFoldButton] = useState(false);
-	const profileImg = userObj.profile_picture;
+	const [allUsers, setAllUsers] = useState([]);
+	const [filter, setFilter] = useState("");
+	const [filteredUsers, setFilteredUsers] = useState([]);
 
 	useEffect(() => {
 		axios
@@ -35,8 +47,30 @@ export default function HomeHeader() {
 				navigate("/");
 			});
 
+		axios
+			.get(`${process.env.REACT_APP_API}/users`)
+			.then((e) => setAllUsers(e.data))
+			.catch((error) => {
+				toast.error(error.message, {
+					position: "top-center",
+					autoClose: 5000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+					theme: "colored",
+				});
+			});
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [token]);
+	}, []);
+
+	useEffect(() => {
+		setFilteredUsers(allUsers.filter((e) => e.username.includes(filter)));
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [filter]);
 
 	function handleLogout() {
 		axios
@@ -70,6 +104,26 @@ export default function HomeHeader() {
 						<h1> linkr </h1>
 					</Link>
 				</div>
+				<SearchBar>
+					<Filter
+						type="text"
+						placeholder="Search for people"
+						onChange={(e) => setFilter(e.target.value)}
+					/>
+					<FilteredUsers isNotCollapsed={filter.length !== 0 && true}>
+						{filteredUsers.map((e) => {
+							return (
+								<SearchBarUser
+									key={e.id}
+									id={e.id}
+									image={e.profile_picture}
+									username={e.username}
+								/>
+							);
+						})}
+					</FilteredUsers>
+					<SearchIcon />
+				</SearchBar>
 				<div>
 					{foldButton === false ? (
 						<UpArrow onClick={() => setFoldButton(!foldButton)} />
@@ -77,8 +131,8 @@ export default function HomeHeader() {
 						<DownArrow onClick={() => setFoldButton(!foldButton)} />
 					)}
 					<ProfilePicture
-						onClick={() => navigate(`/post/${userObj.username}`)}
-						src={profileImg}
+						onClick={() => navigate(`/user/${userObj.id}`)}
+						src={userObj.profile_picture}
 						alt="profile_picture"
 					/>
 				</div>
@@ -89,72 +143,3 @@ export default function HomeHeader() {
 		</>
 	);
 }
-
-const Header = styled.div`
-	position: fixed;
-	top: 0;
-	left: 0;
-	z-index: 2;
-
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-
-	width: 100vw;
-	height: 72px;
-	background: #151515;
-	div {
-		display: flex;
-		align-items: center;
-		gap: 10px;
-		padding-right: 15px;
-	}
-	h1 {
-		font-family: "Passion One";
-		font-weight: 700;
-		font-size: 49px;
-		line-height: 54px;
-		letter-spacing: 0.05em;
-		color: #ffffff;
-		padding-left: 30px;
-	}
-	a {
-		text-decoration: none;
-	}
-`;
-const ProfilePicture = styled.img`
-	width: 53px;
-	height: 53px;
-	border-radius: 26.5px;
-	cursor: pointer;
-`;
-const UpArrow = styled(IoIosArrowUp)`
-	width: 25px;
-	height: 25px;
-	color: #ffffff;
-	cursor: pointer;
-`;
-const DownArrow = styled(IoIosArrowDown)`
-	width: 25px;
-	height: 25px;
-	color: #ffffff;
-	cursor: pointer;
-`;
-const LogOutButton = styled.button`
-	position: fixed;
-	right: -20px;
-	top: 72px;
-
-	width: 150px;
-	height: 47px;
-	border-radius: 0px 0px 20px 20px;
-	background: #171717;
-
-	font-family: "Lato";
-	font-weight: 700;
-	font-size: 17px;
-	line-height: 20px;
-	letter-spacing: 0.05em;
-	color: #fff;
-	padding-right: 20px;
-`;
