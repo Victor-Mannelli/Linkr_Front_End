@@ -32,26 +32,39 @@ export default function Posts({ trend }) {
 					);
 				});
 		} else {
-			axios
-				.get(`${process.env.REACT_APP_API}/hashtag/${trend}`, config)
-				.then((e) => {
-					const dataArray = e.data;
-					setTrends(dataArray);
-				})
-				.catch((error) => {
-					toast.error(error.message, {
-						position: "top-center",
-						autoClose: 5000,
-						hideProgressBar: false,
-						closeOnClick: true,
-						pauseOnHover: true,
-						draggable: true,
-						progress: undefined,
-						theme: "colored",
-					});
-				});
-		}
-
+			const SearchTrend = () => {
+                const tratarSucesso = (res) => {
+               
+                    const dataArray = res.data
+                    console.log(dataArray)
+                    setTrends(dataArray)
+                }
+    
+                const tratarErro = (res) => {
+                    console.log(res)
+                    toast.error(
+						"An error occured while trying to fetch the posts, please refresh the page",
+						{
+							position: "top-center",
+							autoClose: 5000,
+							hideProgressBar: false,
+							closeOnClick: true,
+							pauseOnHover: true,
+							draggable: true,
+							progress: undefined,
+							theme: "colored",
+						}
+					);
+                    //navigate("/")
+                    //window.location.reload()
+                }
+                const requisicao = axios.get(`${process.env.REACT_APP_API}/hashtag/${trend}`, config);
+                requisicao.then(tratarSucesso)
+                requisicao.catch(tratarErro)
+            }
+            SearchTrend()
+        }
+        
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [trend, isPosted]);
 
