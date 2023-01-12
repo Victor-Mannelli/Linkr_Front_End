@@ -1,14 +1,11 @@
-import { useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import HomeHeader from "../components/homePage/homeHeader";
+import HomeHeader from "../components/homePage/header/homeHeader";
 import Timeline from "../components/homePage/timeline";
-import TrendsBox from "../components/homePage/trendsBox";
+import TrendsBox from "../components/trendsBox"; 
 import { useParams } from 'react-router-dom';
 
 export default function TrendPage(){
     const {hashtag} = useParams();
-    console.log(hashtag)
 
     return (
         <>
