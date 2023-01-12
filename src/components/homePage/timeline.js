@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Post from "./post";
 import Posts from "./posts";
+import InfiniteScroll from "react-infinite-scroller";
 
 export default function Timeline({title}) {
     const boolean = !title ? true : false 
