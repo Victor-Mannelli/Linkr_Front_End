@@ -2,7 +2,7 @@ import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { DataContext } from "../context/auth";
 import styled from "styled-components";
-import HomeHeader from "../components/homePage/homeHeader";
+import HomeHeader from "../components/homePage/header/homeHeader";
 import Timeline from "../components/homePage/timeline";
 import TrendsBox from "../components/trendsBox";
 

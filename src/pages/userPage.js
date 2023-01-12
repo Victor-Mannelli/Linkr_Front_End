@@ -1,25 +1,24 @@
 import axios from "axios";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { DataContext } from "../context/auth";
 import styled from "styled-components";
-import HomeHeader from "../components/homePage/homeHeader";
+import HomeHeader from "../components/homePage/header/homeHeader";
 import TrendsBox from "../components/trendsBox";
 import CardPost from "../components/homePage/cardPost";
 
 export default function UserPage() {
 	const navigate = useNavigate();
-	const { userObj } = useContext(DataContext);
-	const { username } = useParams();
+	const { id } = useParams();
 	const [userPosts, setUserPosts] = useState([]);
 
 	useEffect(() => {
 		axios
-			.get(`${process.env.REACT_APP_API}/post/${username}`)
+			.get(`${process.env.REACT_APP_API}/user/${id}`)
 			.then((e) => setUserPosts(e.data))
 			.catch(() => navigate("/home"));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [id]);
+	console.log(userPosts)
 
 	return (
 		<>
@@ -27,14 +26,15 @@ export default function UserPage() {
 			<Main>
 				<div>
 					<PageTitle>
-						<img src={userObj.profile_picture} alt="profile_picture" />
-						<h1> {userObj.username}'s posts </h1>
+						<img src={userPosts[0]?.profile_picture} alt="profile_picture" />
+						<h1> {userPosts[0]?.username}'s posts </h1>
 					</PageTitle>
 					{userPosts.map((e) => {
 						return (
 							<CardPost
 								key={e.id}
 								id={e.id}
+								user_id={id}
 								username={e.username}
 								image={e.profile_picture}
 								link={e.link}

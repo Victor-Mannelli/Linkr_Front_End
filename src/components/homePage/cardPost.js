@@ -20,6 +20,7 @@ export default function CardPost({
 	title,
 	description,
 	id,
+	user_id
 }) {
 	const [boolLike, setboolLike] = useState(false);
 	const [likeId, setLikeId] = useState("");
@@ -35,6 +36,7 @@ export default function CardPost({
 		fontWeight: 700,
 		cursor: "pointer",
 	};
+
 	const VerifyLikes = (array) => {
 		const isMe = array.filter((item) => item.isyou === true);
 		//console.log(isMe)
@@ -213,35 +215,27 @@ export default function CardPost({
 				},
 			};
 
-			const tratarSucesso = (res) => {
-				//console.log(res)
-				const dataArray = res.data;
-				VerifyLikes(dataArray);
-				setLikes(dataArray);
-			};
-
-			const tratarErro = (res) => {
-				console.log(res);
-				toast.error(res.message, {
-					position: "top-center",
-					autoClose: 5000,
-					hideProgressBar: false,
-					closeOnClick: true,
-					pauseOnHover: true,
-					draggable: true,
-					progress: undefined,
-					theme: "colored",
+			axios
+				.get(`${process.env.REACT_APP_API}/likes`, config)
+				.then((e) => {
+					const dataArray = e.data;
+					VerifyLikes(dataArray);
+					setLikes(dataArray);
+				})
+				.catch((e) => {
+					console.log(e);
+					toast.error(e.message, {
+						position: "top-center",
+						autoClose: 5000,
+						hideProgressBar: false,
+						closeOnClick: true,
+						pauseOnHover: true,
+						draggable: true,
+						progress: undefined,
+						theme: "colored",
+						//navigate("/")
+					});
 				});
-				//navigate("/")
-				//window.location.reload()
-			};
-
-			const requisicao = axios.get(
-				`${process.env.REACT_APP_API}/likes`,
-				config
-			);
-			requisicao.then(tratarSucesso);
-			requisicao.catch(tratarErro);
 		};
 		GetLikes();
 		//setInterval(GetLikes,2000)
@@ -267,7 +261,7 @@ export default function CardPost({
 	return (
 		<Card>
 			<ProfilePicture
-				onClick={() => navigate(`/post/${username}`)}
+				onClick={() => navigate(`/user/${user_id}`)}
 				className="perfil"
 				src={image}
 				alt="profile"
@@ -291,7 +285,7 @@ export default function CardPost({
 
 			<div className="column">
 				<div className="name">
-					{username}
+					<h1 onClick={() => navigate(`/user/${user_id}`)}> {username} </h1>
 					<Buttons id={id} />
 					{/* <Buttons id={id} newCaption={newCaption} /> */}
 				</div>
@@ -309,114 +303,119 @@ export default function CardPost({
 						<p className="description">{description}</p>
 						<p className="url">{link}</p>
 					</div>
-					{image_link? <HyperLinkImage src={image_link} alt="url_picture" />: <img src={linkpic} alt="url_picture"/> }
+					{image_link ? (
+						<HyperLinkImage src={image_link} alt="url_picture" />
+					) : (
+						<img src={linkpic} alt="url_picture" />
+					)}
 				</div>
 			</div>
 		</Card>
 	);
 }
 const Card = styled.div`
-    display:flex;
-    justify-content:space-between;
-    width:100%;
-    background: #171717;
-    height: 276px;
-    border-radius: 16px;
-    padding: 18px;
-    position: relative;
-    font-family: 'Lato';
-    font-style: normal;
-    margin-bottom: 18px;
-    color: #FFFFFF;
-    
-    .name{
-        display:flex;
-        justify-content:space-between;
-        font-style: normal;
-        font-weight: 400;
-        font-size: 19px;
-        line-height: 23px;
-        margin-top:5px;
-    }
-    .caption{
-        color: #B7B7B7;
-        font-style: normal;
-        font-weight: 400;
-        font-size: 17px;
-        line-height: 20px;
-        line-break: normal;
-    }
-    .perfil{
-        width: 50px;
-        height: 50px;
-        border-radius: 26.5px;
-    }
-    .title{
-        font-style: normal;
-        font-weight: 400;
-        font-size: 16px;
-        line-height: 19px;
-        color: #CECECE;
-    }
-    p{
-        font-style: normal;
-        font-weight: 400;
-        font-size: 11px;
-        line-height: 13px;
-        line-break: normal;
-    }
-    .description{
-        color: #9B9595;
-    }
-    .url{
-        color: #CECECE;
-    }
-    .column{
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-        justify-content:space-between;
-        width:90%;
-        padding-left: 15px; 
-        
-        div{
-            width:100%;
-            padding-left: 10px; 
-        }
-    }
-    .link{
-        width: 100%;
-        height: 155px;
-        display:flex;
-        border: 1px solid #4D4D4D;
-        border-radius: 11px;
-        color: #B7B7B7;
-        cursor:pointer;
-    }
-    .texto{
-        display: flex;
-        justify-content: space-between;
-        flex-direction: column;
-        padding:10px;
-    }
-    @media(max-width: 614px){
-        border-radius: 0px;
-        height: 232px;
-        img{
-            max-width: 95px;
-            max-height:115px;
-        }
-        .link{
-            max-height:115px;
-        }
-        .texto{
-            padding: 5px;
-        }
-		.url{
-            max-width: 120px; // Limite maximo do texto
-        }
-    }
-`
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	background: #171717;
+	height: 276px;
+	border-radius: 16px;
+	padding: 18px;
+	position: relative;
+	font-family: "Lato";
+	font-style: normal;
+	margin-bottom: 18px;
+	color: #ffffff;
+
+	.name {
+		display: flex;
+		justify-content: space-between;
+		font-style: normal;
+		font-weight: 400;
+		font-size: 19px;
+		line-height: 23px;
+		margin-top: 5px;
+		cursor: pointer;
+	}
+	.caption {
+		color: #b7b7b7;
+		font-style: normal;
+		font-weight: 400;
+		font-size: 17px;
+		line-height: 20px;
+		line-break: normal;
+	}
+	.perfil {
+		width: 50px;
+		height: 50px;
+		border-radius: 26.5px;
+	}
+	.title {
+		font-style: normal;
+		font-weight: 400;
+		font-size: 16px;
+		line-height: 19px;
+		color: #cecece;
+	}
+	p {
+		font-style: normal;
+		font-weight: 400;
+		font-size: 11px;
+		line-height: 13px;
+		line-break: normal;
+	}
+	.description {
+		color: #9b9595;
+	}
+	.url {
+		color: #cecece;
+	}
+	.column {
+		display: flex;
+		align-items: center;
+		flex-direction: column;
+		justify-content: space-between;
+		width: 90%;
+		padding-left: 15px;
+
+		div {
+			width: 100%;
+			padding-left: 10px;
+		}
+	}
+	.link {
+		width: 100%;
+		height: 155px;
+		display: flex;
+		border: 1px solid #4d4d4d;
+		border-radius: 11px;
+		color: #b7b7b7;
+		cursor: pointer;
+	}
+	.texto {
+		display: flex;
+		justify-content: space-between;
+		flex-direction: column;
+		padding: 10px;
+	}
+	@media (max-width: 614px) {
+		border-radius: 0px;
+		height: 232px;
+		img {
+			max-width: 95px;
+			max-height: 115px;
+		}
+		.link {
+			max-height: 115px;
+		}
+		.texto {
+			padding: 5px;
+		}
+		.url {
+			max-width: 120px; // Limite maximo do texto
+		}
+	}
+`;
 const LikeDiv = styled.div`
 	position: absolute;
 	top: 80px;
