@@ -32,15 +32,14 @@ export default function Posts({ trend }) {
 					);
 				});
 		} else {
-			const SearchTrend = () => {
-				const tratarSucesso = (res) => {
-					const dataArray = res.data;
-					console.log(dataArray);
+			axios
+				.get(`${process.env.REACT_APP_API}/hashtag/${trend}`, config)
+				.then((e) => {
+					const dataArray = e.data;
 					setTrends(dataArray);
-				};
-				const tratarErro = (res) => {
-					console.log(res);
-					toast.error(res.message, {
+				})
+				.catch((error) => {
+					toast.error(error.message, {
 						position: "top-center",
 						autoClose: 5000,
 						hideProgressBar: false,
@@ -50,16 +49,9 @@ export default function Posts({ trend }) {
 						progress: undefined,
 						theme: "colored",
 					});
-					//navigate("/")
-					//window.location.reload()
-				};
-				axios
-					.get(`${process.env.REACT_APP_API}/hashtag/${trend}`, config)
-					.then(tratarSucesso)
-					.catch(tratarErro);
-			};
-			SearchTrend();
+				});
 		}
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [trend, isPosted]);
 
