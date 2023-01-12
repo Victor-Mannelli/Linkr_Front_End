@@ -207,41 +207,46 @@ export default function CardPost({
 		}
 	};
 	useEffect(() => {
-		const GetLikes = () => {
-			const config = {
-				headers: {
-					Authorization: `Bearer ${token}`,
-					post_id: id,
-				},
-			};
 
-			axios
-				.get(`${process.env.REACT_APP_API}/likes`, config)
-				.then((e) => {
-					const dataArray = e.data;
-					VerifyLikes(dataArray);
-					setLikes(dataArray);
-				})
-				.catch((e) => {
-					console.log(e);
-					toast.error(e.message, {
-						position: "top-center",
-						autoClose: 5000,
-						hideProgressBar: false,
-						closeOnClick: true,
-						pauseOnHover: true,
-						draggable: true,
-						progress: undefined,
-						theme: "colored",
-						//navigate("/")
-					});
-				});
-		};
-		GetLikes();
-		//setInterval(GetLikes,2000)
+        const GetLikes = () => {
 
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [update, id]);
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    post_id: id
+                }
+            }
+
+            const tratarSucesso = (res) => {
+                //console.log(res)
+                const dataArray = res.data
+                VerifyLikes(dataArray)
+                setLikes(dataArray)
+            }
+
+            const tratarErro = (res) => {
+                console.log(res)
+                toast.error(res.message, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                });
+                //navigate("/")
+                //window.location.reload()
+            }
+
+            const requisicao = axios.get(`${process.env.REACT_APP_API}/likes`, config);
+            requisicao.then(tratarSucesso)
+            requisicao.catch(tratarErro)
+        }
+        GetLikes();
+        //setInterval(GetLikes,2000)
+    }, [update, id])
 
 	const displayLike = () => {
 		if (likes.length <= 0) {
