@@ -1,15 +1,18 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState,useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import HomeHeader from "../components/homePage/header/homeHeader";
 import TrendsBox from "../components/trendsBox";
 import CardPost from "../components/homePage/cardPost";
+import { DataContext } from "../context/auth";
 
 export default function UserPage() {
 	const navigate = useNavigate();
 	const { id } = useParams();
 	const [userPosts, setUserPosts] = useState([]);
+	const { setIsSearch } = useContext(DataContext);
+	setIsSearch(true)
 
 	useEffect(() => {
 		axios
@@ -46,7 +49,7 @@ export default function UserPage() {
 						);
 					})}
 				</div>
-				<TrendsBox />
+				<TrendsBox  searchUser = {id}/>
 			</Main>
 		</>
 	);
