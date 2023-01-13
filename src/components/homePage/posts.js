@@ -9,6 +9,7 @@ import styled from "styled-components";
 import useInterval from "use-interval";
 import dayjs from 'dayjs';
 import { warning } from "@remix-run/router";
+import { DivWarning } from "../../styles/warning";
 
 export default function Posts({ trend }) {
 	const config = CreateConfig();
@@ -211,8 +212,6 @@ export default function Posts({ trend }) {
 		}else{
 			try{
 				const newTrends = (await axios.get(`${process.env.REACT_APP_API}/hashtag/${trend}`, config)).data;
-				console.log(newTrends)
-				console.log(allTrends)
 				if(newTrends.length > allTrends.length){
 					setWarning(true);
 					const subtraction = newTrends.length - allTrends.length
@@ -228,11 +227,11 @@ export default function Posts({ trend }) {
 
 	const VerifyPosts = () => {
 		if (posts == null) {
-			return "...Loading";
+			return <DivWarning><h1>...Loading</h1></DivWarning>;
 		}else if (posts.length === 0 && trends.length === 0 && !followBool) {
-			return "You don't follow anyone yet. Search for new friends!";
+			return <DivWarning><h1>You don't follow anyone yet. Search for new friends!</h1></DivWarning>;
 		}else if(posts.length === 0 && trends.length === 0 ){
-			return "No posts found from your friends";
+			return <DivWarning><h1>No posts found from your friends</h1></DivWarning>;
 		}else if(trends.length>0){
 			return (
 				trends.map((p, i) => (
