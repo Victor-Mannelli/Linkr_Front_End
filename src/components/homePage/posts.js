@@ -53,8 +53,12 @@ export default function Posts({ trend }) {
 					setOffset(response.length)
 					let array = response
 					array = array.filter((item)=>item.hasfollow === true)
-					if (array.length>0) {
+					if (array.length > 0) {
 						setFollowBool(true)
+						console.log(array)
+					}else{
+						setFollowBool(false)
+						console.log(array.length)
 					}
 					if(response.length===0){
 						setHasMore(false);
@@ -225,7 +229,7 @@ export default function Posts({ trend }) {
 	const VerifyPosts = () => {
 		if (posts == null) {
 			return "...Loading";
-		}else if (posts.length === 0 && trends.length === 0 && followBool) {
+		}else if (posts.length === 0 && trends.length === 0 && !followBool) {
 			return "You don't follow anyone yet. Search for new friends!";
 		}else if(posts.length === 0 && trends.length === 0 ){
 			return "No posts found from your friends";
