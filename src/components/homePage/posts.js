@@ -36,7 +36,7 @@ export default function Posts({ trend }) {
 				offset:0
 			},
 		};
-		console.log(configPost)
+
 		if (!trend) {
 			setHasMore(true);
 			setLoading(true);
@@ -51,7 +51,7 @@ export default function Posts({ trend }) {
 					setPosts(response);
 					setLoading(false);
 					setOffset(response.length)
-					let array = response.data
+					let array = response
 					array = array.filter((item)=>item.hasfollow === true)
 					if (array.length>0) {
 						setFollowBool(true)
@@ -81,31 +81,7 @@ export default function Posts({ trend }) {
 			fetchTimeline();
 		} else {
 			const SearchTrend = async () => {
-                /*const tratarSucesso = (res) => {
-               
-                    const dataArray = res.data
-                    console.log(dataArray)
-                    setTrends(dataArray)
-                }
-    
-                const tratarErro = (res) => {
-                    console.log(res)
-                    toast.error(
-						"An error occured while trying to fetch the posts, please refresh the page",
-						{
-							position: "top-center",
-							autoClose: 5000,
-							hideProgressBar: false,
-							closeOnClick: true,
-							pauseOnHover: true,
-							draggable: true,
-							progress: undefined,
-							theme: "colored",
-						}
-					);
-                    //navigate("/")
-                    //window.location.reload()
-                }*/
+
 				try{
 					const arraytrends = (await axios.get(`${process.env.REACT_APP_API}/hashtag/${trend}`, config)).data;
 					console.log(arraytrends);
