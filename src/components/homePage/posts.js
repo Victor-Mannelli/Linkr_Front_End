@@ -11,13 +11,34 @@ export default function Posts({ trend }) {
 	const config = CreateConfig();
 	const [posts, setPosts] = useState([]);
 	const [trends, setTrends] = useState([]);
-	const { isPosted } = useContext(DataContext);
-	const { token } = useContext(DataContext);
-	
-	const[loading, setLoading] = useState(false);
+	const [followBool, setFollowBool] = useState(false);
+	const { isPosted,token } = useContext(DataContext);
+  const[loading, setLoading] = useState(false);
 	const[hasMore, setHasMore] = useState(true);
 	const[totalCount,setTotalCount] = useState(0);
 	const[offset, setOffset] = useState(0);
+
+	console.log(followBool)
+	useEffect(() => {
+		if (!trend) {
+			axios
+				.get(`${process.env.REACT_APP_API}/post`, config)
+				.then((res) => {
+					setPosts(res.data)
+					console.log(res.data)
+					let array = res.data
+					array = array.filter((item)=>item.hasfollow === true)
+					if (array.length>0) {
+						setFollowBool(true)
+					}else{
+
+					}
+				})
+				.catch(() => {
+
+	
+	
+	
 
 	useEffect(() => {
 		if (!trend) {
@@ -47,6 +68,7 @@ export default function Posts({ trend }) {
 				catch(error){
 					setHasMore(false)
 					setLoading(false)
+
 					toast.error(
 						"An error occured while trying to fetch the posts, please refresh the page",
 						{
@@ -63,6 +85,7 @@ export default function Posts({ trend }) {
 				}
 			}
 			fetchTimeline();
+
 		} else {
 			const SearchTrend = () => {
                 const tratarSucesso = (res) => {
@@ -142,8 +165,10 @@ export default function Posts({ trend }) {
 	const VerifyPosts = () => {
 		if (posts == null) {
 			return "...Loading";
-		} else if (posts.length === 0 && trends.length === 0) {
-			return "Você ainda não tem publicações";
+		} else if (posts.length === 0 && trends.length === 0 && followBool) {
+			return "You don't follow anyone yet. Search for new friends!";
+		}else if(posts.length === 0 && trends.length === 0 ){
+			return "No posts found from your friends";
 		} else if (trends.length > 0) {
 			return trends.map((p, i) => (
 				<CardPost
