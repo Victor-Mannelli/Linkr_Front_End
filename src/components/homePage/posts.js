@@ -26,8 +26,17 @@ export default function Posts({ trend }) {
 	const[refresh, setRefresh] = useState(false);
 	const[numberNewPosts,setNumberNewPOsts] = useState(0);
 	const[allPosts,SetAllPosts] = useState([]);
+	const[allTrends,SetAllTrends] = useState([]);
 
 	useEffect(() => {
+		const configPost = {
+			headers: {
+				Authorization: `Bearer ${token}`,
+				limit:10,
+				offset:0
+			},
+		};
+		console.log(configPost)
 		if (!trend) {
 			setHasMore(true);
 			setLoading(true);
@@ -35,13 +44,6 @@ export default function Posts({ trend }) {
 
 			const fetchTimeline = async ()=>{
 				try{
-					const configPost = {
-						headers: {
-							Authorization: `Bearer ${token}`,
-							limit:10,
-							offset:0
-						},
-					};
 					setLoading(true);
 					const arrayPosts = (await axios.get(`${process.env.REACT_APP_API}/post`, config)).data;
 					SetAllPosts(arrayPosts);
@@ -78,8 +80,8 @@ export default function Posts({ trend }) {
 			}
 			fetchTimeline();
 		} else {
-			const SearchTrend = () => {
-                const tratarSucesso = (res) => {
+			const SearchTrend = async () => {
+                /*const tratarSucesso = (res) => {
                
                     const dataArray = res.data
                     console.log(dataArray)
@@ -103,10 +105,31 @@ export default function Posts({ trend }) {
 					);
                     //navigate("/")
                     //window.location.reload()
-                }
-                const requisicao = axios.get(`${process.env.REACT_APP_API}/hashtag/${trend}`, config);
-                requisicao.then(tratarSucesso)
-                requisicao.catch(tratarErro)
+                }*/
+				try{
+					const arraytrends = (await axios.get(`${process.env.REACT_APP_API}/hashtag/${trend}`, config)).data;
+					console.log(arraytrends);
+					const requisicao = await axios.get(`${process.env.REACT_APP_API}/hashtag/${trend}`, configPost);
+					const dataArray = requisicao.data;
+                    console.log(dataArray);
+                    setTrends(dataArray);
+					SetAllTrends(arraytrends);
+				}catch(error){
+					console.log(error)
+                    toast.error(
+						"An error occured while trying to fetch the posts, please refresh the page",
+						{
+							position: "top-center",
+							autoClose: 5000,
+							hideProgressBar: false,
+							closeOnClick: true,
+							pauseOnHover: true,
+							draggable: true,
+							progress: undefined,
+							theme: "colored",
+						}
+					);
+				}
             }
             SearchTrend()
         }
@@ -131,13 +154,12 @@ export default function Posts({ trend }) {
 				setHasMore(false);
 			}
 			setOffset(offset+newResponse.length);
-			console.log("offset: "+offset);
 
 		}catch(error){
 			setLoading(false)
 			console.log(error)
 			toast.error(
-				"Aconteceu um erro ao tentar carregar mais posts",
+				"An error occured while trying to fetch the posts, please refresh the page",
 				{
 					position: "top-center",
 					autoClose: 5000,
@@ -152,18 +174,35 @@ export default function Posts({ trend }) {
 		}
 	}
 	useInterval(async()=>{
-		try{
-			const newPosts = (await axios.get(`${process.env.REACT_APP_API}/post`, config)).data;
-			if(newPosts.length > allPosts.length){
-				setWarning(true);
-				const subtraction = newPosts.length - allPosts.length
-				setNumberNewPOsts(subtraction);
-				SetAllPosts(newPosts);
+		if (trends.length==0){
+			try{
+				const newPosts = (await axios.get(`${process.env.REACT_APP_API}/post`, config)).data;
+				if(newPosts.length > allPosts.length){
+					setWarning(true);
+					const subtraction = newPosts.length - allPosts.length
+					setNumberNewPOsts(subtraction);
+					SetAllPosts(newPosts);
+				}
+			}catch(error){
+				console.log("An error occured while trying to fetch the posts, please refresh the page")
 			}
-		}catch(error){
-			console.log("ocorreu um erro a carregar novos posts")
+	
+		}else{
+			try{
+				const newTrends = (await axios.get(`${process.env.REACT_APP_API}/hashtag/${trend}`, config)).data;
+				console.log(newTrends)
+				console.log(allTrends)
+				if(newTrends.length > allTrends.length){
+					setWarning(true);
+					const subtraction = newTrends.length - allTrends.length
+					setNumberNewPOsts(subtraction);
+					SetAllTrends(newTrends);
+				}
+			}catch(error){
+				console.log("An error occured while trying to fetch the posts, please refresh the page")
+			}
+	
 		}
-
 	},15000);
 
 	const VerifyPosts = () => {
@@ -173,7 +212,26 @@ export default function Posts({ trend }) {
 			return "You don't follow anyone yet. Search for new friends!";
 		}else if(posts.length === 0 && trends.length === 0 ){
 			return "No posts found from your friends";
-		}else {
+		}else if(trends.length>0){
+			return (
+				trends.map((p, i) => (
+				<CardPost
+					key={i}
+					id={p.id}
+					obj={p}
+					username={p.username}
+					image={p.image}
+					link={p.link}
+					caption={p.caption}
+					image_link={p.image_link}
+					title={p.title}
+					description={p.description}
+					user_id={p.user_id}
+				/>
+			))
+			);
+		}
+		else {
 			return (
 				posts.map((p, i) => (
 				<CardPost
