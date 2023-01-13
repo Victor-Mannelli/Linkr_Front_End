@@ -1,70 +1,24 @@
 import axios from "axios";
-import { useEffect, useState,useContext } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import HomeHeader from "../components/homePage/header/homeHeader";
 import TrendsBox from "../components/trendsBox";
 import CardPost from "../components/homePage/cardPost";
-import { DataContext } from "../context/auth";
-import InfiniteScroll from "react-infinite-scroller";
-import { DivWarning } from "../styles/warning.js";
 
 export default function UserPage() {
 	const navigate = useNavigate();
 	const { id } = useParams();
 	const [userPosts, setUserPosts] = useState([]);
-	const { setIsSearch } = useContext(DataContext);
-	setIsSearch(true)
-
-	const[hasMore, setHasMore] = useState(true);
-	const[offset, setOffset] = useState(0);
 
 	useEffect(() => {
-		const configPost = {
-			headers: {
-				limit:10,
-				offset:0
-			},
-		};
-		const fetchUserPost = async ()=>{
-			try{
-				const response = (await axios.get(`${process.env.REACT_APP_API}/user/${id}`, configPost)).data
-				setUserPosts(response);
-				console.log(userPosts);
-				setOffset(response.length)
-				if(response.length===0){
-					setHasMore(false);
-				}
-			}catch{
-				navigate("/home")
-			}
-
-		}
-		fetchUserPost();
+		axios
+			.get(`${process.env.REACT_APP_API}/user/${id}`)
+			.then((e) => setUserPosts(e.data))
+			.catch(() => console.log("erro ao carregar dados"))//navigate("/home"));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [id]);
 	console.log(userPosts)
-
-	async function loadPosts(){
-			try{
-				const configPost = {
-					headers: {
-						limit:10,
-						offset
-					},
-				}
-				const newResponse = (await axios.get(`${process.env.REACT_APP_API}/user/${id}`, configPost)).data;
-
-				setUserPosts([...userPosts, ...newResponse]);
-				if (newResponse.length === 0) {
-					setHasMore(false);
-				}
-				setOffset(offset+newResponse.length);
-	
-			}catch(error){
-				console.log(error)
-			}
-	}	
 
 	return (
 		<>
@@ -72,37 +26,27 @@ export default function UserPage() {
 			<Main>
 				<div>
 					<PageTitle>
-							<img src={userPosts[0]?.profile_picture} alt="profile_picture" />
-							<h1> {userPosts[0]?.username}'s posts </h1>
+						<img src={userPosts[0]?.profile_picture} alt="profile_picture" />
+						<h1> {userPosts[0]?.username}'s posts </h1>
 					</PageTitle>
-					{userPosts.length!==0?<DivWarning><h1>Não há publicações desse usuário</h1></DivWarning>
-					:
-					<InfiniteScroll
-					pageStart={0}
-					loadMore={loadPosts}
-					hasMore={hasMore}
-					loader={<Loader>Loading more posts...</Loader>}
-					>
 					{userPosts.map((e) => {
 						return (
-						<CardPost
-							key={e.id}
-							id={e.id}
-							user_id={id}
-							username={e.username}
-							image={e.profile_picture}
-							link={e.link}
-							caption={e.caption}
-							image_link={e.image_link}
-							title={e.title}
-							description={e.description}
-						/>
+							<CardPost
+								key={e.id}
+								id={e.id}
+								user_id={id}
+								username={e.username}
+								image={e.profile_picture}
+								link={e.link}
+								caption={e.caption}
+								image_link={e.image_link}
+								title={e.title}
+								description={e.description}
+							/>
 						);
 					})}
-					</InfiniteScroll>
-				}
 				</div>
-				<TrendsBox  searchUser = {id}/>
+				<TrendsBox />
 			</Main>
 		</>
 	);
