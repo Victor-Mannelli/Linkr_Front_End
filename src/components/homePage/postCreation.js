@@ -8,7 +8,6 @@ import axios from "axios";
 export default function PostCreation() {
 	const config = CreateConfig();
 	const [disabled, setDisabled] = useState(false);
-	const [postComplete, setPostComplete] = useState({});
 	const [post, setPost] = useState({
 		link: "",
 		caption: "",
@@ -30,20 +29,14 @@ export default function PostCreation() {
 			}
 		});
 
-		// const postObject = {
-		// 	link: post.link,
-		// 	caption: post.caption,
-		// 	trends: trends,
-		// };
-
-		setPostComplete({
+		const postObject = {
 			link: post.link,
 			caption: post.caption,
 			trends: trends,
-		})
+		};
 
 		axios
-			.post(`${process.env.REACT_APP_API}/post`, postComplete, config)
+			.post(`${process.env.REACT_APP_API}/post`, postObject, config)
 			.then((res) => {
 				setDisabled(false);
 				setPost({

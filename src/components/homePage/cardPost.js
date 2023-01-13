@@ -371,9 +371,25 @@ const Card = styled.div`
 	}
 	.description {
 		color: #9b9595;
+		overflow: hidden; // Removendo barra de rolagem
+        text-overflow: ellipsis; // Adicionando "..." ao final
+        display: -webkit-box;
+        -webkit-line-clamp: 3; // Quantidade de linhas
+        -webkit-box-orient: vertical; 
+        word-break: break-all;
+	}
+	.img{
+		width: 153.44px;
+        height: 155px;
+        border-radius: 0px 12px 13px 0px;
+        object-fit: cover;
 	}
 	.url {
 		color: #cecece;
+		color: #CECECE;
+        white-space: nowrap; // Removendo quebra de linha
+        overflow: hidden; // Removendo a barra de rolagem
+        text-overflow: ellipsis; // Adicionando "..." 
 	}
 	.column {
 		display: flex;
