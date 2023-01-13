@@ -96,10 +96,12 @@ export default function TrendsBox({ searchUser }) {
 			
 		}else{
 			const InsertFollow = () => {
-				const obj = {
+
+				const configs = {
 					follow_id: searchUser
 				}
 				const tratarSucesso = (res) => {
+					console.log(res)
 					setDisable(false)
 				};
 	
@@ -120,9 +122,9 @@ export default function TrendsBox({ searchUser }) {
 					//window.location.reload()
 				};
 	
-				const requisicao = axios.get(
-					`${process.env.REACT_APP_API}/follow`, obj,
-					config
+				const requisicao = axios.post(
+					`${process.env.REACT_APP_API}/follow`,
+					configs,config
 				);
 				requisicao.then(tratarSucesso);
 				requisicao.catch(tratarErro);
