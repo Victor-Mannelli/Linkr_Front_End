@@ -151,4 +151,22 @@ export const UserInABar = styled.div`
 		color: #515151;
         padding-left: 15px;
 	}
+	div{
+		font-family: "Lato";
+		font-size: 19px;
+		line-height: 23px;
+		color: #515151;
+        padding-left: 35px;
+
+		display: flex;
+		
+	}
+	svg{
+		padding-top: 3px;
+		width: 35px;
+		height: 35px;
+	}
+	p{
+		padding-top: 6px;
+	}
 `;

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const SectionStyle = styled.section`
-	margin-top: 150px;
+
 	margin-left: 25px;
 	background-color: #171717;
 	color: white;
@@ -41,3 +41,26 @@ export const SectionStyle = styled.section`
 		display: none;
 	}
 `;
+
+export const SideDiv = styled.div`
+	margin-top: ${props=>props.boolean? '70px' : "150px"};
+	display: flex;
+	flex-direction: column;
+	gap: 50px;
+
+	button{
+			width: 30%;
+			height: 5%;
+			margin-left: 160px;
+			background-color: ${props=>props.click? '#FFFFFF' : "#1877F2"};
+
+			border-radius: 5px;
+			border-style: none;
+
+			color: ${props=>props.click? '#1877F2' : "white"};
+			font-weight: 700;
+
+			display: ${props=>props.boolean? '' : "none"};
+	}
+
+`
