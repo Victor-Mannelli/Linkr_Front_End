@@ -109,6 +109,9 @@ const Main = styled.div`
 	padding-top: 72px;
 	min-height: 100vh;
 	background: #333333;
+	div{
+		max-width: 611px;
+	}
 `;
 const PageTitle = styled.div`
 	display: flex;
@@ -128,6 +131,9 @@ const PageTitle = styled.div`
 		height: 53px;
 		border-radius: 26.5px;
 		margin: 0 20px 0 18px;
+	}
+	@media (max-width: 614px) {
+		margin-top: 20px;
 	}
 `;
 const Loader = styled.div`

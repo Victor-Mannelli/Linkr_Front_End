@@ -28,6 +28,10 @@ export const Header = styled.div`
 	a {
 		text-decoration: none;
 	}
+	@media (max-width: 614px) {
+		h1 {
+			padding-left: 5px;
+		}
 `;
 export const ProfilePicture = styled.img`
 	width: 53px;
@@ -35,6 +39,9 @@ export const ProfilePicture = styled.img`
 	margin: 0 30px 0 10px;
 	border-radius: 26.5px;
 	cursor: pointer;
+	@media (max-width: 614px) {
+	margin: 5px;
+	}
 `;
 export const UpArrow = styled(IoIosArrowUp)`
 	width: 25px;
@@ -67,11 +74,19 @@ export const LogOutButton = styled.button`
 	letter-spacing: 0.05em;
 	color: #fff;
 	padding-right: 20px;
+	@media (max-width: 614px) {
+		z-index: 3;
+	}
 `;
 export const SearchBar = styled.div`
 	position: relative;
 	width: 563px;
 	height: 45px;
+	@media (max-width: 614px) {
+		width: 100%;
+		position: absolute;
+		top: 80px;
+	}
 `;
 export const Filter = styled.input`
 	position: absolute;
@@ -96,6 +111,9 @@ export const Filter = styled.input`
 		font-family: "Lato";
 		line-height: 23px;
 		color: #c6c6c6;
+	}
+	@media (max-width: 614px) {
+		width: 100%;
 	}
 `;
 export const SearchIcon = styled(RxMagnifyingGlass)`

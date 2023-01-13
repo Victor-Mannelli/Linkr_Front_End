@@ -63,4 +63,9 @@ export const SideDiv = styled.div`
 			display: ${props=>props.boolean? '' : "none"};
 	}
 
+	@media (max-width: 614px) {
+		button{
+			display:none;
+	}
+	}
 `
