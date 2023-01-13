@@ -289,10 +289,9 @@ export default function CardPost({
 			<div className="column">
 				<div className="name">
 					<h1 onClick={() => navigate(`/user/${user_id}`)}> {username} </h1>
-					{/* <Buttons id={id} newCaption={newCaption} /> */}
-					<Buttons id={id} />
+					<Buttons id={id} caption={caption} />
 				</div>
-				
+
 				<div className="caption">
 					<ReactTagify
 						tagStyle={tagStyle}
@@ -300,7 +299,7 @@ export default function CardPost({
 					>
 						{caption}
 					</ReactTagify>
-				
+
 				</div>
 				<div className="link" onClick={() => openWindow(link)}>
 					<div className="texto">

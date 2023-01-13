@@ -1,4 +1,6 @@
+import styled from "styled-components";
 import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { deletePost, updatePost } from "../../service/server";
 import { ThreeDots } from "react-loader-spinner";
 import { FaTrash } from "react-icons/fa";
@@ -6,18 +8,18 @@ import { TiPencil } from "react-icons/ti";
 import { CreateConfig } from "../../service/config";
 import { DataContext } from "../../context/auth";
 import Modal from "react-modal";
-import styled from "styled-components";
 import { toast } from "react-toastify";
 
 Modal.setAppElement("#root");
 
-export default function Buttons({ id, newCaption }) {
+export default function Buttons({ id, caption }) {
 	const [modalIsOpen, setModalIsOpen] = useState(false);
-	const [formInf, setFormInf] = useState({ newCaption: newCaption });
+	const [formInf, setFormInf] = useState({ newCaption: caption });
 	const { isPosted, setIsPosted } = useContext(DataContext);
 	const [isEditing, setIsEditing] = useState(false);
 	const [isDisable, setIsDisable] = useState(false);
 	const config = CreateConfig();
+	const navigate = useNavigate();
 
 	function openModal() {
 		setModalIsOpen(true);
@@ -71,7 +73,7 @@ export default function Buttons({ id, newCaption }) {
 		setIsEditing(false);
 		setFormInf({
 			...formInf,
-			newCaption: newCaption,
+			newCaption: caption,
 		});
 	}
 
@@ -102,6 +104,8 @@ export default function Buttons({ id, newCaption }) {
 				setFormInf({ newCaption: formInf.newCaption });
 				setIsDisable(false);
 				setIsEditing(false);
+				const y = !isPosted;
+				setIsPosted(y);
 			})
 			.catch(() => {
 				toast.error("An error has occurred on editing post's caption", {
@@ -117,6 +121,19 @@ export default function Buttons({ id, newCaption }) {
 				setIsDisable(false);
 			});
 	}
+
+	function selectHash(){
+        const words = caption.split(' ');
+        
+        return <>{words.map((word, index) => {
+        if(word.includes("#")){
+            return <strong onClick={() => navigate("/hashtag/" + word.substring(1))} key={index}>{word} </strong>;
+        } else {
+            return word + " "
+        }
+        })}</>;
+    }
+    
 
 	return (
 		<DivButton>
@@ -188,7 +205,7 @@ export default function Buttons({ id, newCaption }) {
 					<button disabled={isDisable} type="submit"></button>
 				</form>
 			) : (
-				<p>{newCaption}</p>
+				<p>{selectHash}</p>
 			)}
 		</DivButton>
 	);
@@ -197,15 +214,14 @@ export default function Buttons({ id, newCaption }) {
 const DivButton = styled.div`
 	display: flex;
 	justify-content: flex-end;
-	
-	form textarea {
+		form textarea {
 		position: absolute;
-		
 		right: 0;
-		width: 503px;
+		width: 500px;
 		height: auto;
 		padding: 4px 9px;
-		margin-right: 21px;
+		margin-top: 28px;
+		margin-right: 18px;
 		font-size: 14px;
 		font-family: "Lato", sans-serif;
 		background-color: #ffffff;
