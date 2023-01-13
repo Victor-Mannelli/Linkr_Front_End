@@ -11,5 +11,9 @@ export function updatePost(postId, body, config) {
     return promise;
 }
 
+export function getTotalComments(postId, config) {
+    const promise = axios.get(`${process.env.REACT_APP_API}/comments/${postId}`, config);
+    return promise;
+}
 
 
