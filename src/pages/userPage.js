@@ -7,6 +7,7 @@ import TrendsBox from "../components/trendsBox";
 import CardPost from "../components/homePage/cardPost";
 import { DataContext } from "../context/auth";
 import InfiniteScroll from "react-infinite-scroller";
+import { DivWarning } from "../styles/warning.js";
 
 export default function UserPage() {
 	const navigate = useNavigate();
@@ -29,6 +30,7 @@ export default function UserPage() {
 			try{
 				const response = (await axios.get(`${process.env.REACT_APP_API}/user/${id}`, configPost)).data
 				setUserPosts(response);
+				console.log(userPosts);
 				setOffset(response.length)
 				if(response.length===0){
 					setHasMore(false);
@@ -73,29 +75,32 @@ export default function UserPage() {
 							<img src={userPosts[0]?.profile_picture} alt="profile_picture" />
 							<h1> {userPosts[0]?.username}'s posts </h1>
 					</PageTitle>
+					{userPosts.length!==0?<DivWarning><h1>Não há publicações desse usuário</h1></DivWarning>
+					:
 					<InfiniteScroll
-						pageStart={0}
-						loadMore={loadPosts}
-						hasMore={hasMore}
-						loader={<Loader>Loading more posts...</Loader>}
+					pageStart={0}
+					loadMore={loadPosts}
+					hasMore={hasMore}
+					loader={<Loader>Loading more posts...</Loader>}
 					>
 					{userPosts.map((e) => {
 						return (
-							<CardPost
-								key={e.id}
-								id={e.id}
-								user_id={id}
-								username={e.username}
-								image={e.profile_picture}
-								link={e.link}
-								caption={e.caption}
-								image_link={e.image_link}
-								title={e.title}
-								description={e.description}
-							/>
+						<CardPost
+							key={e.id}
+							id={e.id}
+							user_id={id}
+							username={e.username}
+							image={e.profile_picture}
+							link={e.link}
+							caption={e.caption}
+							image_link={e.image_link}
+							title={e.title}
+							description={e.description}
+						/>
 						);
 					})}
 					</InfiniteScroll>
+				}
 				</div>
 				<TrendsBox  searchUser = {id}/>
 			</Main>
