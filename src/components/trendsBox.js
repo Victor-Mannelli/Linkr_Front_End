@@ -19,12 +19,12 @@ export default function TrendsBox({ searchUser }) {
 		const GetTrends = () => {
 			const tratarSucesso = (res) => {
 				const dataArray = res.data;
-				console.log(dataArray);
+
 				setTrends(dataArray);
 			};
 
 			const tratarErro = (res) => {
-				console.log(res);
+
 				toast.error(res.message, {
 					position: "top-center",
 					autoClose: 5000,
@@ -131,12 +131,12 @@ export default function TrendsBox({ searchUser }) {
 		}
 		
 	}
-	console.log(isSearching)
+
 	useEffect(() => {
 		
 			const GetFollow = () => {
 				const {Authorization} = config.headers
-				console.log(searchUser)
+
 				const configs = {
 					headers: {
 						Authorization: `Bearer ${token}`,
@@ -146,7 +146,7 @@ export default function TrendsBox({ searchUser }) {
 
 				const tratarSucesso = (res) => {
 					const dataObj = res.data;
-					console.log(dataObj);
+
 					setFollow(dataObj);
 					if (dataObj.areFollower && !isClicked) {
 						const bool = !isClicked
