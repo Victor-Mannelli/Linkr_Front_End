@@ -3,9 +3,13 @@ import HomeHeader from "../components/homePage/header/homeHeader";
 import Timeline from "../components/homePage/timeline";
 import TrendsBox from "../components/trendsBox"; 
 import { useParams } from 'react-router-dom';
+import { useContext, useEffect } from "react";
+import { DataContext } from "../context/auth";
 
 export default function TrendPage(){
     const {hashtag} = useParams();
+    const { setIsSearch } = useContext(DataContext);
+    setIsSearch(false)
 
     return (
         <>
@@ -23,4 +27,5 @@ const Content = styled.div`
     background: #333333;
     display:flex;   
     justify-content:center;
+    padding-top: 72px;
 `
