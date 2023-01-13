@@ -40,7 +40,7 @@ export default function Posts({ trend }) {
 					setPosts(response);
 					setLoading(false);
 					setOffset(response.length)
-					let array = res.data
+					let array = response.data
 					array = array.filter((item)=>item.hasfollow === true)
 					if (array.length>0) {
 						setFollowBool(true)
