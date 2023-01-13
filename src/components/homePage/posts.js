@@ -6,6 +6,9 @@ import { toast } from "react-toastify";
 import CardPost from "./cardPost";
 import InfiniteScroll from "react-infinite-scroller";
 import styled from "styled-components";
+import useInterval from "use-interval";
+import dayjs from 'dayjs';
+import { warning } from "@remix-run/router";
 
 export default function Posts({ trend }) {
 	const config = CreateConfig();
@@ -18,6 +21,10 @@ export default function Posts({ trend }) {
 	const[hasMore, setHasMore] = useState(true);
 	const[totalCount,setTotalCount] = useState(0);
 	const[offset, setOffset] = useState(0);
+	const[warning, setWarning] = useState(false);
+	const[refresh, setRefresh] = useState(false);
+	const[numberNewPosts,setNumberNewPOsts] = useState(0);
+	const[allPosts,SetAllPosts] = useState([]);
 
 	useEffect(() => {
 		if (!trend) {
@@ -35,6 +42,8 @@ export default function Posts({ trend }) {
 						},
 					};
 					setLoading(true);
+					const arrayPosts = (await axios.get(`${process.env.REACT_APP_API}/post`, config)).data;
+					SetAllPosts(arrayPosts);
 					const response = (await axios.get(`${process.env.REACT_APP_API}/post`, configPost)).data;
 					setPosts(response);
 					setLoading(false);
@@ -96,9 +105,8 @@ export default function Posts({ trend }) {
             }
             SearchTrend()
         }
-        
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [trend, isPosted]);
+	}, [trend, isPosted, refresh]);
 
 	async function loadPosts(){
 
@@ -138,6 +146,20 @@ export default function Posts({ trend }) {
 			);
 		}
 	}
+	useInterval(async()=>{
+		try{
+			const newPosts = (await axios.get(`${process.env.REACT_APP_API}/post`, config)).data;
+			if(newPosts.length > allPosts.length){
+				setWarning(true);
+				const subtraction = newPosts.length - allPosts.length
+				setNumberNewPOsts(subtraction);
+				SetAllPosts(newPosts);
+			}
+		}catch(error){
+			console.log("ocorreu um erro a carregar novos posts")
+		}
+
+	},15000);
 
 	const VerifyPosts = () => {
 		if (posts == null) {
@@ -161,13 +183,7 @@ export default function Posts({ trend }) {
 			));
 		} else {
 			return (
-				<InfiniteScroll
-				pageStart={0}
-				loadMore={loadPosts}
-				hasMore={hasMore}
-				loader={<Loader>Loading more posts...</Loader>}
-			  	>
-				{posts.map((p, i) => (
+				posts.map((p, i) => (
 				<CardPost
 					key={i}
 					id={p.id}
@@ -181,24 +197,57 @@ export default function Posts({ trend }) {
 					description={p.description}
 					user_id={p.user_id}
 				/>
-			))}
-			</InfiniteScroll>
+			))
 			);
 		}
 	};
-	return VerifyPosts();
+	return( 
+		<InfiniteScroll
+		pageStart={0}
+		loadMore={loadPosts}
+		hasMore={hasMore}
+		loader={<Loader>Loading more posts...</Loader>}
+		>
+		{warning?
+		<Warning onClick= {()=>{
+			setRefresh(!refresh)
+			setWarning(false)
+			}}>
+			{`${numberNewPosts} new posts, load more!`}
+		</Warning>:""}
+		{VerifyPosts()}
+		</InfiniteScroll>
+	);
 }
 
 const Loader = styled.div`
-  color: white;
   width: 100%;
   margin-bottom: 200px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: Lato;
-  font-size: 22px;
+  font-family: 'Lato';
+  font-style: normal;
   font-weight: 400;
+  font-size: 22px;
   line-height: 26px;
   letter-spacing: 0.05em;
+  color: #6D6D6D;
+`;
+const Warning = styled.div`
+  width: 100%;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #1877F2;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 16px;
+  color:white;
+  height: 61px;
+  font-family: 'Lato';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 19px;
 `;
