@@ -70,7 +70,7 @@ export default function HomeHeader() {
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [filter]);
-	console.log(filteredUsers)
+
 	function handleLogout() {
 		axios
 			.delete(`${process.env.REACT_APP_API}/logout`, {

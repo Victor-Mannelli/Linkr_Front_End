@@ -54,10 +54,10 @@ export default function CardPost({
 			setMe(true);
 			let x = likePhrase;
 			if (array.length === 1) {
-				console.log("1");
+				
 				x = "Você";
 			} else if (array.length === 2) {
-				console.log("2");
+				
 				const name = array[1].id !== isMe[0].id ? array[1].name : array[0].name;
 				x = "Você e " + name;
 			} else {
@@ -78,7 +78,7 @@ export default function CardPost({
 				}
 			}
 
-			console.log(x);
+			
 			setPhrase(x);
 		} else if (array.length > 0) {
 			let x = likePhrase;
@@ -106,7 +106,7 @@ export default function CardPost({
 					}
 				}
 			}
-			console.log(x);
+			
 			setPhrase(x);
 		}
 	};
@@ -136,7 +136,7 @@ export default function CardPost({
 					};
 
 					const tratarErro = (res) => {
-						console.log(res);
+						
 						toast.error(res.message, {
 							position: "top-center",
 							autoClose: 5000,
@@ -252,7 +252,7 @@ export default function CardPost({
 		if (likes.length <= 0) {
 			return 0 + " likes";
 		} else {
-			console.log(likes.length);
+			
 			return Number(likes.length) === 1
 				? likes.length + "like"
 				: Number(likes.length) + " likes";
