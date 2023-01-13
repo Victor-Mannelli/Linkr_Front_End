@@ -9,7 +9,8 @@ import TrendsBox from "../components/trendsBox";
 export default function HomePage(){
     const navigate = useNavigate();
 	const { token } = useContext(DataContext);
-    
+    const { setIsSearch } = useContext(DataContext);
+    setIsSearch(false)
 	useEffect(() => {
 		token === null && navigate("/");
 		//eslint-disable-next-line react-hooks/exhaustive-deps

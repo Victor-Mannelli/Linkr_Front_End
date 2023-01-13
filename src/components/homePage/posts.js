@@ -12,6 +12,7 @@ import { warning } from "@remix-run/router";
 
 export default function Posts({ trend }) {
 	const config = CreateConfig();
+	const [followBool, setFollowBool] = useState(false);
 	const [posts, setPosts] = useState([]);
 	const [trends, setTrends] = useState([]);
 	const { isPosted } = useContext(DataContext);
@@ -48,7 +49,11 @@ export default function Posts({ trend }) {
 					setPosts(response);
 					setLoading(false);
 					setOffset(response.length)
-					
+					let array = response.data
+					array = array.filter((item)=>item.hasfollow === true)
+					if (array.length>0) {
+						setFollowBool(true)
+					}
 					if(response.length===0){
 						setHasMore(false);
 					}
@@ -164,24 +169,11 @@ export default function Posts({ trend }) {
 	const VerifyPosts = () => {
 		if (posts == null) {
 			return "...Loading";
-		} else if (posts.length === 0 && trends.length === 0) {
-			return "Você ainda não tem publicações";
-		} else if (trends.length > 0) {
-			return trends.map((p, i) => (
-				<CardPost
-					key={i}
-					id={p.id}
-					username={p.username}
-					image={p.image}
-					link={p.link}
-					caption={p.caption}
-					image_link={p.image_link}
-					title={p.title}
-					description={p.description}
-					user_id={p.user_id}
-				/>
-			));
-		} else {
+		}else if (posts.length === 0 && trends.length === 0 && followBool) {
+			return "You don't follow anyone yet. Search for new friends!";
+		}else if(posts.length === 0 && trends.length === 0 ){
+			return "No posts found from your friends";
+		}else {
 			return (
 				posts.map((p, i) => (
 				<CardPost
