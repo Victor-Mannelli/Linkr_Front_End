@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import Buttons from "./buttons";
 import axios from "axios";
 import linkpic from "../assets/link.jpeg";
+import CommentButton from "./commentsButton";
 
 export default function CardPost({
 	username,
@@ -29,6 +30,7 @@ export default function CardPost({
 	const [update, setUpdate] = useState(false);
 	const [likePhrase, setPhrase] = useState("");
 	const [itsMe, setMe] = useState(false);
+	const [isCommentsOpen, setIsCommentsOpen] = useState(false);
 	const { token } = useContext(DataContext);
 	const navigate = useNavigate();
 	const tagStyle = {
@@ -277,6 +279,12 @@ export default function CardPost({
 					<AiFillHeart onClick={ClickLike} />
 				)}
 				<p>{displayLike()}</p>
+
+			<CommentButton 
+			id={id}
+			setIsCommentsOpen={setIsCommentsOpen}
+			isCommentsOpen={isCommentsOpen}
+			/>
 			</LikeDiv>
 
 			<Tooltip
@@ -285,6 +293,7 @@ export default function CardPost({
 				anchorId={id}
 				content={likePhrase}
 			/>
+
 
 			<div className="column">
 				<div className="name">
