@@ -9,36 +9,16 @@ import styled from "styled-components";
 
 export default function Posts({ trend }) {
 	const config = CreateConfig();
+	const [followBool, setFollowBool] = useState(false);
 	const [posts, setPosts] = useState([]);
 	const [trends, setTrends] = useState([]);
-	const [followBool, setFollowBool] = useState(false);
-	const { isPosted,token } = useContext(DataContext);
-  const[loading, setLoading] = useState(false);
+	const { isPosted } = useContext(DataContext);
+	const { token } = useContext(DataContext);
+	
+	const[loading, setLoading] = useState(false);
 	const[hasMore, setHasMore] = useState(true);
 	const[totalCount,setTotalCount] = useState(0);
 	const[offset, setOffset] = useState(0);
-
-	console.log(followBool)
-	useEffect(() => {
-		if (!trend) {
-			axios
-				.get(`${process.env.REACT_APP_API}/post`, config)
-				.then((res) => {
-					setPosts(res.data)
-					console.log(res.data)
-					let array = res.data
-					array = array.filter((item)=>item.hasfollow === true)
-					if (array.length>0) {
-						setFollowBool(true)
-					}else{
-
-					}
-				})
-				.catch(() => {
-
-	
-	
-	
 
 	useEffect(() => {
 		if (!trend) {
@@ -60,7 +40,11 @@ export default function Posts({ trend }) {
 					setPosts(response);
 					setLoading(false);
 					setOffset(response.length)
-					
+					let array = response.data
+					array = array.filter((item)=>item.hasfollow === true)
+					if (array.length>0) {
+						setFollowBool(true)
+					}
 					if(response.length===0){
 						setHasMore(false);
 					}
@@ -68,7 +52,6 @@ export default function Posts({ trend }) {
 				catch(error){
 					setHasMore(false)
 					setLoading(false)
-
 					toast.error(
 						"An error occured while trying to fetch the posts, please refresh the page",
 						{
@@ -85,7 +68,6 @@ export default function Posts({ trend }) {
 				}
 			}
 			fetchTimeline();
-
 		} else {
 			const SearchTrend = () => {
                 const tratarSucesso = (res) => {
@@ -165,26 +147,11 @@ export default function Posts({ trend }) {
 	const VerifyPosts = () => {
 		if (posts == null) {
 			return "...Loading";
-		} else if (posts.length === 0 && trends.length === 0 && followBool) {
+		}else if (posts.length === 0 && trends.length === 0 && followBool) {
 			return "You don't follow anyone yet. Search for new friends!";
 		}else if(posts.length === 0 && trends.length === 0 ){
 			return "No posts found from your friends";
-		} else if (trends.length > 0) {
-			return trends.map((p, i) => (
-				<CardPost
-					key={i}
-					id={p.id}
-					username={p.username}
-					image={p.image}
-					link={p.link}
-					caption={p.caption}
-					image_link={p.image_link}
-					title={p.title}
-					description={p.description}
-					user_id={p.user_id}
-				/>
-			));
-		} else {
+		}else {
 			return (
 				<InfiniteScroll
 				pageStart={0}
