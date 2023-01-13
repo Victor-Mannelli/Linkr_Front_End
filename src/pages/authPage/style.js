@@ -5,6 +5,10 @@ export const AuthorizationPage = styled.div`
 	grid-template-columns: 65% 35%;
 	grid-template-rows: 100%;
 	height: 100vh;
+	@media (max-width: 614px) {
+		display:flex;
+		flex-direction:column;
+	}
 `;
 export const Banner = styled.div`
 	display: flex;
@@ -28,6 +32,16 @@ export const Banner = styled.div`
 		font-size: 43px;
 		line-height: 64px;
 	}
+	@media (max-width: 614px) {
+		h1 {
+			font-size: 76px;
+		}
+		h2 {
+			font-size: 23px;
+			line-height: 34px;
+			text-align: center;
+		}
+	}
 `;
 export const AuthBar = styled.div`
 	background: #333333;
@@ -43,5 +57,10 @@ export const AuthBar = styled.div`
 		text-decoration: underline;
 		color: #fff;
 		cursor: pointer;
+	}
+	@media (max-width: 614px) {
+		padding-top:20px;
+		padding-bottom:20px;
+		height: 100vh;
 	}
 `;
