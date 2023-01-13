@@ -1,18 +1,20 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { deletePost, updatePost } from "../../service/server";
 import { ThreeDots } from "react-loader-spinner";
 import { FaTrash } from "react-icons/fa";
 import { TiPencil } from "react-icons/ti";
 import { CreateConfig } from "../../service/config";
+import { DataContext } from "../../context/auth";
 import Modal from "react-modal";
 import styled from "styled-components";
 import { toast } from "react-toastify";
 
 Modal.setAppElement("#root");
 
-export default function Buttons({ obj, newCaption }) {
+export default function Buttons({ id, newCaption }) {
 	const [modalIsOpen, setModalIsOpen] = useState(false);
 	const [formInf, setFormInf] = useState({ newCaption: newCaption });
+	const { isPosted, setIsPosted } = useContext(DataContext);
 	const [isEditing, setIsEditing] = useState(false);
 	const [isDisable, setIsDisable] = useState(false);
 	const config = CreateConfig();
@@ -27,11 +29,14 @@ export default function Buttons({ obj, newCaption }) {
 
 	function deletePostFunction() {
 		setIsDisable(true);
-
-		deletePost(obj.id, config)
+		console.log(id)
+		deletePost(id, config)
 			.then((res) => {
 				closeModal();
 				setIsDisable(false);
+				const y = !isPosted;
+				setIsPosted(y);
+				console.log(isPosted);
 			})
 			.catch((error) => {
 				toast.error("Could not delete the post", {
@@ -91,7 +96,7 @@ export default function Buttons({ obj, newCaption }) {
 		const body = { ...formInf, newTrend: trends };
 		console.log(formInf);
 
-		const promise = updatePost(obj.id, body);
+		const promise = updatePost(id, body);
 		promise
 			.then((r) => {
 				setFormInf({ newCaption: formInf.newCaption });
@@ -123,7 +128,7 @@ export default function Buttons({ obj, newCaption }) {
 				onRequestClose={closeModal}
 				isDisable={isDisable}
 				setIsDisable={setIsDisable}
-				obj={obj}
+				id={id}
 				contentLabel="Example Modal"
 				action="delete"
 			>
@@ -192,10 +197,15 @@ export default function Buttons({ obj, newCaption }) {
 const DivButton = styled.div`
 	display: flex;
 	justify-content: flex-end;
-	align-items form textarea {
-		width: 100%;
+	
+	form textarea {
+		position: absolute;
+		
+		right: 0;
+		width: 503px;
 		height: auto;
 		padding: 4px 9px;
+		margin-right: 21px;
 		font-size: 14px;
 		font-family: "Lato", sans-serif;
 		background-color: #ffffff;

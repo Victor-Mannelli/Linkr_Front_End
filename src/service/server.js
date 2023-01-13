@@ -1,6 +1,7 @@
 import axios from "axios";
 
 export function deletePost(postId, config) {
+    console.log(postId);
     const promise = axios.delete(`${process.env.REACT_APP_API}/post/${postId}`, config);
     return promise;
 }

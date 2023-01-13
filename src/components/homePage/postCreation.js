@@ -45,6 +45,7 @@ export default function PostCreation() {
 				});
 				const y = !isPosted;
 				setIsPosted(y);
+				console.log(isPosted);
 			})
 			.catch((error) => {
 				toast.error("Houve um erro ao publicar seu link", {

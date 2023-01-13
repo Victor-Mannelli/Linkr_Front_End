@@ -69,8 +69,7 @@ export default function CardPost({
 					} else if (i === 2 || array[i].isyou === false) {
 						x =
 							x +
-							` e outras  ${
-								array.length - 2 === 0 ? "" : array.length - 2
+							` e outras  ${array.length - 2 === 0 ? "" : array.length - 2
 							} pessoas`;
 					} else {
 					}
@@ -98,8 +97,7 @@ export default function CardPost({
 					} else if (!array[i].isyou) {
 						x =
 							x +
-							`e outras  ${
-								array[0].count - 2 === 0 ? "" : array[0].count - 2
+							`e outras  ${array[0].count - 2 === 0 ? "" : array[0].count - 2
 							} pessoas`;
 					} else {
 						i--;
@@ -208,45 +206,45 @@ export default function CardPost({
 	};
 	useEffect(() => {
 
-        const GetLikes = () => {
+		const GetLikes = () => {
 
-            const config = {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    post_id: id
-                }
-            }
+			const config = {
+				headers: {
+					Authorization: `Bearer ${token}`,
+					post_id: id
+				}
+			}
 
-            const tratarSucesso = (res) => {
-                //console.log(res)
-                const dataArray = res.data
-                VerifyLikes(dataArray)
-                setLikes(dataArray)
-            }
+			const tratarSucesso = (res) => {
+				//console.log(res)
+				const dataArray = res.data
+				VerifyLikes(dataArray)
+				setLikes(dataArray)
+			}
 
-            const tratarErro = (res) => {
-                console.log(res)
-                toast.error(res.message, {
-                    position: "top-center",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "colored",
-                });
-                //navigate("/")
-                //window.location.reload()
-            }
+			const tratarErro = (res) => {
+				console.log(res)
+				toast.error(res.message, {
+					position: "top-center",
+					autoClose: 5000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+					theme: "colored",
+				});
+				//navigate("/")
+				//window.location.reload()
+			}
 
-            const requisicao = axios.get(`${process.env.REACT_APP_API}/likes`, config);
-            requisicao.then(tratarSucesso)
-            requisicao.catch(tratarErro)
-        }
-        GetLikes();
-        //setInterval(GetLikes,2000)
-    }, [update, id])
+			const requisicao = axios.get(`${process.env.REACT_APP_API}/likes`, config);
+			requisicao.then(tratarSucesso)
+			requisicao.catch(tratarErro)
+		}
+		GetLikes();
+		//setInterval(GetLikes,2000)
+	}, [update, id])
 
 	const displayLike = () => {
 		if (likes.length <= 0) {
@@ -291,9 +289,10 @@ export default function CardPost({
 			<div className="column">
 				<div className="name">
 					<h1 onClick={() => navigate(`/user/${user_id}`)}> {username} </h1>
-					<Buttons id={id} />
 					{/* <Buttons id={id} newCaption={newCaption} /> */}
+					<Buttons id={id} />
 				</div>
+				
 				<div className="caption">
 					<ReactTagify
 						tagStyle={tagStyle}
@@ -301,6 +300,7 @@ export default function CardPost({
 					>
 						{caption}
 					</ReactTagify>
+				
 				</div>
 				<div className="link" onClick={() => openWindow(link)}>
 					<div className="texto">
@@ -343,6 +343,7 @@ const Card = styled.div`
 		cursor: pointer;
 	}
 	.caption {
+
 		color: #b7b7b7;
 		font-style: normal;
 		font-weight: 400;
