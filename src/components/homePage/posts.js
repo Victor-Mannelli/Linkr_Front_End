@@ -113,7 +113,11 @@ export default function Posts({ trend }) {
 					const dataArray = requisicao.data;
                     console.log(dataArray);
                     setTrends(dataArray);
+					setOffset(dataArray.length)
 					SetAllTrends(arraytrends);
+					if(dataArray.length===0){
+						setHasMore(false);
+					}
 				}catch(error){
 					console.log(error)
                     toast.error(
@@ -137,41 +141,78 @@ export default function Posts({ trend }) {
 	}, [trend, isPosted, refresh]);
 
 	async function loadPosts(){
-
-		try{
-			const configPost = {
-				headers: {
-					Authorization: `Bearer ${token}`,
-					limit:10,
-					offset
-				},
-			}
-			const newResponse = (await axios.get(`${process.env.REACT_APP_API}/post`, configPost)).data;
-			setLoading(false);
-
-			setPosts([...posts, ...newResponse]);
-			if (newResponse.length === 0) {
-				setHasMore(false);
-			}
-			setOffset(offset+newResponse.length);
-
-		}catch(error){
-			setLoading(false)
-			console.log(error)
-			toast.error(
-				"An error occured while trying to fetch the posts, please refresh the page",
-				{
-					position: "top-center",
-					autoClose: 5000,
-					hideProgressBar: false,
-					closeOnClick: true,
-					pauseOnHover: true,
-					draggable: true,
-					progress: undefined,
-					theme: "colored",
+		if(!trend){
+			try{
+				const configPost = {
+					headers: {
+						Authorization: `Bearer ${token}`,
+						limit:10,
+						offset
+					},
 				}
-			);
+				const newResponse = (await axios.get(`${process.env.REACT_APP_API}/post`, configPost)).data;
+				setLoading(false);
+	
+				setPosts([...posts, ...newResponse]);
+				if (newResponse.length === 0) {
+					setHasMore(false);
+				}
+				setOffset(offset+newResponse.length);
+	
+			}catch(error){
+				setLoading(false)
+				console.log(error)
+				toast.error(
+					"An error occured while trying to fetch the posts, please refresh the page",
+					{
+						position: "top-center",
+						autoClose: 5000,
+						hideProgressBar: false,
+						closeOnClick: true,
+						pauseOnHover: true,
+						draggable: true,
+						progress: undefined,
+						theme: "colored",
+					}
+				);
+			}
+		}else{
+			try{
+				const configPost = {
+					headers: {
+						Authorization: `Bearer ${token}`,
+						limit:10,
+						offset
+					},
+				}
+				const newResponse = (await axios.get(`${process.env.REACT_APP_API}/hashtag/${trend}`, configPost)).data;
+				setLoading(false);
+	
+				setTrends([...trends, ...newResponse]);
+				if (newResponse.length === 0) {
+					setHasMore(false);
+				}
+				setOffset(offset+newResponse.length);
+	
+			}catch(error){
+				setLoading(false)
+				console.log(error)
+				toast.error(
+					"An error occured while trying to fetch the posts, please refresh the page",
+					{
+						position: "top-center",
+						autoClose: 5000,
+						hideProgressBar: false,
+						closeOnClick: true,
+						pauseOnHover: true,
+						draggable: true,
+						progress: undefined,
+						theme: "colored",
+					}
+				);
+			}			
 		}
+
 	}
 	useInterval(async()=>{
 		if (trends.length==0){
